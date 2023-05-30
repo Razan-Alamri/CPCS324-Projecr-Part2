@@ -2,8 +2,11 @@ package GraphFramework;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
+
+//import AirFreightApp.AFRouteMap;
 
 public abstract class Graph {
 
@@ -21,13 +24,15 @@ public abstract class Graph {
     public boolean isDigraph;
     // decleare 2D array to store matrix this matrix will represent the edge between
     // pair of two vertex
-    Edge[][] adjMatrix;
+    // Edge[][] adjMatrix;
     // decleare variable to store the list of vertices of a graph
     Vertex[] vertices;
     // decleare variable to store the total number of edges
     int totalEdges;
     // decleare variable to store the total number of vertices
     int totalVertices;
+
+    LinkedList<Edge>[] adjList;
 
     // ----------------------------Constructors section----------------------------
     /**
@@ -48,8 +53,13 @@ public abstract class Graph {
         this.totalEdges = totalEdgesNo;
         this.isDigraph = isDigraph;
         this.totalVertices = totalVerticesNo;
-        adjMatrix = new Edge[totalVerticesNo][totalVerticesNo];// intially null
+        // adjMatrix = new Edge[totalVerticesNo][totalVerticesNo];// intially null
         vertices = new Vertex[totalVerticesNo];
+
+        adjList = new LinkedList[totalVerticesNo];
+        for (int i = 0; i < totalVerticesNo; i++) {
+            adjList[i] = new LinkedList<Edge>();
+        }
 
     }
 
@@ -94,23 +104,14 @@ public abstract class Graph {
             // increament vertices number by one
             verticesNo++;
         }
-        // create edge object with vertex v as source and u as destination
         Edge e = creatEdge(vertices[v], vertices[u], w);
-        // add the edge to the matrix between the pair (v,u)
-        adjMatrix[v][u] = e;
-        // increament edge number by one
+        adjList[v].add(e);
         edgeNo++;
-        // if is undirected graph create another edge with the destinationId as source
-        // and add it to the destiantion adjList
         if (!isDigraph) {
-            // create edge object with vertex u as source and v as destination
             Edge e2 = creatEdge(vertices[u], vertices[v], w);
-            // add the edge to the matrix between the pair (u,v)
-            adjMatrix[u][v] = e2;
-            // increament edge number by one
+            adjList[u].add(e2);
             edgeNo++;
         }
-        // return the first edge created
         return e;
     }
 
@@ -141,10 +142,10 @@ public abstract class Graph {
         // --- STEP 2: Add the remainig edges randomly ---
         for (int i = 0; i < remaning && edgeNo < totalEdges; i++) {
             // source position is the vertex that will have an adjacent vertex
-            int srcPosition = random.nextInt(adjMatrix.length);
+            int srcPosition = random.nextInt(adjList.length);
             // target postion randomly chooses which vertex to create edge between it and
             // source postion
-            int targetPosition = random.nextInt(adjMatrix.length);
+            int targetPosition = random.nextInt(adjList.length);
             /*
              * Avoid self-edges or having an adjacent vertex that already exists
              * 1- A self-edge happens when the vertex with scrPosition = targetPosition,
@@ -192,7 +193,10 @@ public abstract class Graph {
         totalEdges = readFile.nextInt();
         // initialize the matrix with number of vertices as number of row
         // and for each row the number of column it will be number of vertice
-        adjMatrix = new Edge[totalVertices][totalVertices];
+        adjList = new LinkedList[totalVertices];
+        for (int i = 0; i < totalVertices; i++) {
+            adjList[i] = new LinkedList<Edge>();
+        }
         // initialize the vertices array with number of vertices as size
         vertices = new Vertex[totalVertices];
 
@@ -225,32 +229,15 @@ public abstract class Graph {
      * This method will print the graph after read it from the file and create
      * the matrix
      */
-    public void PrintGraphFile() {
-        System.out.print("\n   ");
-        for (int i = 0; i < totalVertices; i++) {
-            System.out.printf("%-4s", vertices[i].label);
-        }
-        System.out.println("\n--------------------------------------------");
-        for (int i = 0; i < totalVertices; i++) {
-            System.out.print(vertices[i].label + "| ");
-            for (int j = 0; j < totalVertices; j++) {
-                if (j == totalVertices - 1) {
-                    if (adjMatrix[i][j] == null) {
-                        System.out.print("∞ ");
-                    } else {
-                        System.out.printf("%-2d ", adjMatrix[i][j].weight);
-                    }
-                    continue;
-                }
-                if (adjMatrix[i][j] != null) {
-                    System.out.print(" ");
-                    System.out.printf("%-3d,", adjMatrix[i][j].weight);
-                } else {
-                    System.out.print("∞ ,");
-                }
-            }
-            System.out.println(" ");
 
+    public void PrintGraphFile() {
+        System.out.println("Adjacency List:");
+        for (int i = 0; i < totalVertices; i++) {
+            System.out.print(vertices[i].label + " -> ");
+            for (Edge e : adjList[i]) {
+                System.out.print(vertices[e.target.position].label + "(" + e.weight + ") ");
+            }
+            System.out.println();
         }
     }
 

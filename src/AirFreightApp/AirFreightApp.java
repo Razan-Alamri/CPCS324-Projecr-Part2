@@ -83,6 +83,8 @@ public class AirFreightApp {
                 graph.isDigraph = isDigraph;
                 // Second : call method "readGraphFromFile" to read graph from file
                 graph.readGraphFromFile(fileInput);
+                graph.PrintGraphFile();
+                System.out.println("gggggggggg");
                 // If the user choice the floyedwarshal algorithm
                 if (choiceAlogrithm == 1) {
                     System.out.println("\t      *** Weight Matrix ***");
@@ -122,6 +124,7 @@ public class AirFreightApp {
                     System.out.println("-----------------------------------------------------");
                     // Call printGraphFile to print the intial matrix
                     graph.PrintGraphFile();
+                    System.out.println("ffffffffffffffffffffff");
                     // Create SingleSourceSPAlg object to use dijkstra algorithm
                     dijkstraAlg = new SingleSourceSPAlg(graph);
                     System.out.println("\n-----------------------------------------------------");
