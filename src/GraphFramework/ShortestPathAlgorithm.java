@@ -1,9 +1,18 @@
 package GraphFramework;
 
 public class ShortestPathAlgorithm {
-    /**
-     * input graph to compute its vertices shortest path
-     */
+
+    // ----------------------------Attributes Section----------------------------
+    // deleare graph object to store the graph
     Graph graph;
 
+    // ----------------------------Constructors section----------------------------
+    /**
+     * Constructor with specific parameter
+     *
+     * @param graph : graph object
+     */
+    public ShortestPathAlgorithm(Graph graph) {
+        this.graph = graph;
+    }
 }

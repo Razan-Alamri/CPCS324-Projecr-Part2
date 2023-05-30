@@ -2,62 +2,68 @@ package GraphFramework;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Random;
 import java.util.Scanner;
 
 public abstract class Graph {
-    /**
-     * to keep track the number of vertices
-     */
-    int verticesNo;
-    /**
-     * to keep track the number of edges
-     */
-    int edgeNo;
-    /**
-     * true if its directed graph, false if undirected
-     */
-    boolean isDigraph;
-    /**
-     * array of vertices of the graph
-     */
-    Vertex[] vertices;
-    /**
-     * adjacency matrix that represent the graph
-     */
-    Edge[][] adjMatrix;
-    /**
-     * user input of the number of edges
-     */
-    int totalNumberOfEdge;
-    /**
-     * user input of the number of vertices
-     */
-    int totalNumberOfVertices;
 
+    // ----------------------------Attributes Section----------------------------
+    // deleare verticesNo variable number of vertices of the graph.
+    // It should be incremented whenever a method a new object is added to the
+    // vertex list.
+    int verticesNo;
+    // deleare edgeNo variable to store edge's number of the graph.
+    // It should be incremented by one in case add edge in directed graph and by two
+    // if it is an undirected graph.
+    int edgeNo;
+    // decleare boolean variable true
+    // -->if the graph is directed graph, false -->if the graph is undirected
+    public boolean isDigraph;
+    // decleare 2D array to store matrix this matrix will represent the edge between
+    // pair of two vertex
+    Edge[][] adjMatrix;
+    // decleare variable to store the list of vertices of a graph
+    Vertex[] vertices;
+    // decleare variable to store the total number of edges
+    int totalEdges;
+    // decleare variable to store the total number of vertices
+    int totalVertices;
+
+    // ----------------------------Constructors section----------------------------
     /**
-     * empty constructor of graph
+     * Default constructor
      */
     public Graph() {
+
     }
 
     /**
-     * constructor with three parameter (number of vertices , number of edges ,
-     * boolean to indicate
-     * if graph is directed or not
-     * 
-     * @param verticesNo number of vertices of graph
-     * @param edgeNo     number of edges of graph
-     * @param isDigraph  if its a directed graph or not
+     * Constructor with specific parameter
+     *
+     * @param totalVerticesNo -- number of vertices of graph
+     * @param totalEdgesNo    -- number of edges between the vertices
+     * @param isDigraph       -- its directed graph or undirected
      */
-    public Graph(int verticesNo, int edgeNo, boolean isDigraph) {
-
-        this.totalNumberOfVertices = verticesNo;
-        this.totalNumberOfEdge = edgeNo;
+    public Graph(int totalVerticesNo, int totalEdgesNo, boolean isDigraph) {
+        this.totalEdges = totalEdgesNo;
         this.isDigraph = isDigraph;
-        adjMatrix = new Edge[totalNumberOfVertices][totalNumberOfVertices];
-        vertices = new Vertex[totalNumberOfVertices];
+        this.totalVertices = totalVerticesNo;
+        adjMatrix = new Edge[totalVerticesNo][totalVerticesNo];// intially null
+        vertices = new Vertex[totalVerticesNo];
 
     }
+
+    // ----------------------------Methods section----------------------------
+    /**
+     * This method pass the source and target to create edge between them and
+     * add it to the adjMatrix[v][u] (and adjMatrix[u][v] if its undirected
+     * graph)
+     *
+     * @param v -- source vertex label
+     * @param u -- target vertex label
+     * @param w -- weight of the edge to be created
+     * @return Edge object was created between v and u (source and target)
+     */
 
     // Abstract method to create object of Vertex
     public abstract Vertex creatVertex(int ID);
@@ -69,166 +75,200 @@ public abstract class Graph {
 
     public abstract Edge creatEdge();
 
-    /**
-     * method that generate graph and ensure that graph is connected
-     * 
-     * @param totalNumberOfVertices total number of vertices
-     * @param totalNumberOfEdge     total number of edges
-     */
-    public void makeGraph(int totalNumberOfVertices, int totalNumberOfEdge) {
-
-        // --------------------
-        // this part to ensure that graph is connected
-        // to connect V vetex we ned V-1 edge
-        // be connected each vetex to the next vertex adjacent to it , we ensuring that
-        // graph is connected
-        for (int i = 1; i < totalNumberOfVertices; i++) {
-            int randomWeight = (int) (Math.random() * (50)) + 1;// first generate random wight to assign it to the edge
-            addEdge(i - 1, i, randomWeight); // then add that edge graph]
-
+    public Edge addEdge(int v, int u, int w) {
+        // if the source vertex not already created
+        if (vertices[v] == null) {
+            // create vertex with v position to be the source
+            Vertex src = new Vertex(v);
+            // add the source vertex to the vertices list
+            vertices[v] = src;
+            // increament vertices number by one
+            verticesNo++;
         }
-        // -----------------------
+        // if the target vertex not already created
+        if (vertices[u] == null) {
+            // create vertex with u position to be the target
+            Vertex target = new Vertex(u);
+            // add the target vertex to the vertices list
+            vertices[u] = target;
+            // increament vertices number by one
+            verticesNo++;
+        }
+        // create edge object with vertex v as source and u as destination
+        Edge e = creatEdge(vertices[v], vertices[u], w);
+        // add the edge to the matrix between the pair (v,u)
+        adjMatrix[v][u] = e;
+        // increament edge number by one
+        edgeNo++;
+        // if is undirected graph create another edge with the destinationId as source
+        // and add it to the destiantion adjList
+        if (!isDigraph) {
+            // create edge object with vertex u as source and v as destination
+            Edge e2 = creatEdge(vertices[u], vertices[v], w);
+            // add the edge to the matrix between the pair (u,v)
+            adjMatrix[u][v] = e2;
+            // increament edge number by one
+            edgeNo++;
+        }
+        // return the first edge created
+        return e;
+    }
 
-        // create edges randomaly and add them
-        while (edgeNo < totalNumberOfEdge) {// if the needed number of edges is reached >> stop loop
-            // randomly choose a source
-            int sourceLable = (int) (Math.random() * (totalNumberOfVertices));
-            // randomly choose a target
-            int targetLabel = (int) (Math.random() * (totalNumberOfVertices));
+    /**
+     * This method to make graph 1- first make the nessecary edge with random
+     * weight to ensure its connected using addEdge (and addEdge will create
+     * source and target vertices if it not already created) 2- make the
+     * remaining edge with random weight using addEdge (and addEdge will create
+     * source and target vertices if it not already created)
+     *
+     * @param totalVertices
+     * @param totalEdges
+     */
+    public void makeGraph(int totalVertices, int totalEdges) {
+        Random random = new Random();
+        // --- STEP 1: create the necessary edges to ensuring the graph is connected ---
+        for (int i = 0; i < totalVertices - 1 && edgeNo < totalEdges; i++) {
+            // generate random integer from 0 to 50(included) to weight the edge
+            int randomWeight = random.nextInt(50) + 1;
+            // invoking addEdge to create edge between the pair of vertices with i and i+1
+            // position
+            addEdge(i, i + 1, randomWeight);
+        }
 
-            if (sourceLable == targetLabel) {// if the source is equal to the
+        // calculate the remainig edges to generate it randomly
+        int remaning = totalEdges - (totalVertices - 1);
+
+        // --- STEP 2: Add the remainig edges randomly ---
+        for (int i = 0; i < remaning && edgeNo < totalEdges; i++) {
+            // source position is the vertex that will have an adjacent vertex
+            int srcPosition = random.nextInt(adjMatrix.length);
+            // target postion randomly chooses which vertex to create edge between it and
+            // source postion
+            int targetPosition = random.nextInt(adjMatrix.length);
+            /*
+             * Avoid self-edges or having an adjacent vertex that already exists
+             * 1- A self-edge happens when the vertex with scrPosition = targetPosition,
+             * thus the vertex will create edge with itself
+             * 2- An edge that already exists: when we want to add a new edge it already
+             * exists
+             * If one of these cases appeared, the iteration should not be counted and
+             * should be ignored without
+             * affecting the number of wanted edges in the graph
+             * We will avoid those cases by using the following if statement
+             */
+            if (adjMatrix[srcPosition][targetPosition] != null || srcPosition == targetPosition) {
+                --i;
                 continue;
             }
-            // if they are diffrent
-            if (adjMatrix[sourceLable][targetLabel] != null) { // if the graph is undirected i need to check only the
-                                                               // source
-                continue; // since the target will have the same edge too
-
-            }
-            int randomWeight = (int) (Math.random() * (50)) + 1;// generate randomWight
-            addEdge(sourceLable, targetLabel, randomWeight); // add the edge to the graph
-
+            // generate random integer from 0 to 50(included) to weight the edge
+            int randomWeight = random.nextInt(50) + 1;
+            // invoking addEdge to create edge between the pair of vertices with srcPosition
+            // and targetPOsition position
+            addEdge(srcPosition, targetPosition, randomWeight);
         }
-        // replace null values withe infinity
-        updateAllNullsValues();
-
-    }// end of makeGraph method
+    }
 
     /**
-     * method that generate graph and read inputs from input file
-     * 
-     * @param inpuFilet that read graph from
-     * @throws java.io.FileNotFoundException reading input file
+     * This method reads the edges and vertices from the text file whose name is
+     * specified by the parameter filename and place data in a Graph object.
+     *
+     * @param fileName
+     * @throws FileNotFoundException
      */
-    public void readFromFile(File inpuFilet) throws FileNotFoundException {
-        Scanner input = new Scanner(inpuFilet);// scanner to read from file
-        String graphType = input.next();
-        if (input.next().equalsIgnoreCase("1"))
+    public void readGraphFromFile(File fileName) throws FileNotFoundException {
+        // create scanner object to read from the file
+        Scanner readFile = new Scanner(fileName);
+        readFile.next();
+        // read the integer and store it in the digraph variable
+        // 0 means flase, 1 means true
+        int digraph = readFile.nextInt();
+        // if it's digraph set isDigraph variable true
+        if (digraph == 1) {
             isDigraph = true;
-        totalNumberOfVertices = input.nextInt();// read number of vertices
-        totalNumberOfEdge = input.nextInt();// read number of edges
-        adjMatrix = new Edge[totalNumberOfVertices][totalNumberOfVertices];// intillize the array of edges
-        vertices = new Vertex[totalNumberOfVertices]; // intillizen the array of vertices
-
-        // add edges of graph
-        while (edgeNo < totalNumberOfEdge) {
-
-            char source = input.next().charAt(0);
-            char destination = input.next().charAt(0);
-            int weight = input.nextInt();
-            addEdge(source - 65, destination - 65, weight);
-            addLabel(source);// add label to the source vertex
-            addLabel(destination);// add label to the destination vertex
-
         }
-        // replace null values withe infinity
-        updateAllNullsValues();
+        // read the number of vertices and store it in the totalVertices variable
+        totalVertices = readFile.nextInt();
+        // read the number of edges and store it in the totalEdges variable
+        totalEdges = readFile.nextInt();
+        // initialize the matrix with number of vertices as number of row
+        // and for each row the number of column it will be number of vertice
+        adjMatrix = new Edge[totalVertices][totalVertices];
+        // initialize the vertices array with number of vertices as size
+        vertices = new Vertex[totalVertices];
 
+        /*
+         * loop to read source label and target label and doing some preprocessing
+         * then call the addEdge() method to determine the position of the Edge
+         * and then processing the returned Edge object to set the label attribute of
+         * the source
+         * and target attributes that are of the type Vertex
+         */
+        while (edgeNo < totalEdges) {
+            // read source label
+            char srcLabel = readFile.next().charAt(0);
+            // read target label
+            char targetLabel = readFile.next().charAt(0);
+            // read weight
+            int wieght = readFile.nextInt();
+            // invoke addEdge to add edge between the source and target position
+            // and store the return edge object
+            // Note: position= label-65
+            Edge edge = addEdge(srcLabel - 65, targetLabel - 65, wieght);
+            // call add vertex position method to add the source vertex label
+            addVertLabel(srcLabel);
+            // calladd vertex position method to add the target vertex label
+            addVertLabel(targetLabel);
+        }
     }
 
     /**
-     * this method used to add edge to the graph
-     * 
-     * @param v      position number of source
-     * @param u      position number of destination
-     * @param weight weight of edge
-     * @return the new edge created by the
+     * This method will print the graph after read it from the file and create
+     * the matrix
      */
-    public Edge addEdge(int v, int u, int weight) {
+    public void PrintGraphFile() {
+        System.out.print("\n   ");
+        for (int i = 0; i < totalVertices; i++) {
+            System.out.printf("%-4s", vertices[i].label);
+        }
+        System.out.println("\n--------------------------------------------");
+        for (int i = 0; i < totalVertices; i++) {
+            System.out.print(vertices[i].label + "| ");
+            for (int j = 0; j < totalVertices; j++) {
+                if (j == totalVertices - 1) {
+                    if (adjMatrix[i][j] == null) {
+                        System.out.print("∞ ");
+                    } else {
+                        System.out.printf("%-2d ", adjMatrix[i][j].weight);
+                    }
+                    continue;
+                }
+                if (adjMatrix[i][j] != null) {
+                    System.out.print(" ");
+                    System.out.printf("%-3d,", adjMatrix[i][j].weight);
+                } else {
+                    System.out.print("∞ ,");
+                }
+            }
+            System.out.println(" ");
 
-        if (vertices[v] == null) { // check if the source Vertex is created before or not
-            vertices[v] = creatVertex(v); // if not, create new object and specify its position
-            verticesNo++; // increment the number of vertices
         }
-        if (vertices[u] == null) {// same for the source postion
-            vertices[u] = creatVertex(u);
-            verticesNo++; // increment the number of vertices
-        }
-
-        adjMatrix[v][u] = creatEdge(vertices[v], vertices[u], weight);// create new edge
-        edgeNo++;// increment number of edges
-        if (!isDigraph) {// if the graph is undirected
-            // add the opssite edge too
-            adjMatrix[u][v] = creatEdge(vertices[u], vertices[v], weight);
-            edgeNo++;// increment number of edges
-        }
-        return adjMatrix[v][u];
     }
 
     /**
-     * method to print the graph
+     * This method to add vertex label
+     *
+     * @param vLabel : is the label of the vertex
+     * @return true if add the label, and false if its already addded
      */
-    public void print_graph() {
-        System.out.print("    ");
-        // print header of all vertices
-        for (int i = 0; i < verticesNo; i++) {
-            System.out.printf("%-3s", vertices[i].label);
-        } // end of for loop
-        System.out.println("");
-        System.out.println("---------------------------------");
-        // print all edges between vertices
-        for (int i = 0; i < verticesNo; i++) {
-            System.out.print(vertices[i].label + " : ");
-            for (int j = 0; j < verticesNo; j++) {
-                if (adjMatrix[i][j].weight != 999999)// if weight doesnt equal to infinity
-                    System.out.printf("%-3d", adjMatrix[i][j].weight);// print the value of weight
-                else
-                    System.out.printf("%-3s", "∞");// otherwise print infinityto indicate there is no edge between these
-                                                   // to vertices
-
-            } // end of inner for loop
-            System.out.println("");
-        } // end of outer for loop
-    }// end of method
-
-    /**
-     * method to add label to a vertex
-     * 
-     * @param lable the label of vertex
-     */
-    public void addLabel(char lable) {
-        vertices[lable - 65].label = lable;
+    public boolean addVertLabel(char vLabel) {
+        // if the label is equal 0 (default character value)
+        if (vertices[vLabel - 65].label == 0) {
+            // store the label
+            vertices[vLabel - 65].label = vLabel;
+            // return true-->the label added sucessfully
+            return true;
+        }
+        // the label not added because it already there
+        return false;
     }
-
-    /**
-     * method to replace all null value with value that greater than the range of
-     * graph weights
-     * and replace the distance form a vertex to itself by zero
-     */
-    public void updateAllNullsValues() {
-        // loop to go through all Edges
-        for (int i = 0; i < adjMatrix.length; i++) {
-            for (int j = 0; j < adjMatrix[i].length; j++) {
-                if (i == j && adjMatrix[i][j] == null)// if i==j
-                    // smallest distance (weight from the vertex to itself)
-                    adjMatrix[i][j] = creatEdge(0);
-
-                else if (adjMatrix[i][j] == null) { // if there is no edges
-                    adjMatrix[i][j] = creatEdge(999999); // set infinity(a number out of the range of wieghts)
-                } // end of eles if
-
-            } // end of inner loop
-
-        } // end of outer loop
-    }// end of method
 }
