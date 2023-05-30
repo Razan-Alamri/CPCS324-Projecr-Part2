@@ -304,6 +304,8 @@ public class AirFreightApp {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("\t\t     *** Thank you for Using the Program ***");
         System.out.println("--------------------------------------------------------------------------------");
+
+        input.close();
     }// END MAIN METHOD
 
 }// END THE PROGRAM
