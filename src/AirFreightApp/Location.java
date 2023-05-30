@@ -1,5 +1,15 @@
 package AirFreightApp;
 
-public class Location {
+import GraphFramework.Vertex;
+
+public class Location extends Vertex {
+
+    public Location(int id) {
+        super(id);
+    }
+
+    public Location() {
+        super();
+    }
 
 }
