@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import GraphFramework.DBAllSourceSPAlg;
-import GraphFramework.Graph;
-import GraphFramework.SingleSourceSPAlg;
+import GraphFramework.*;
 
 public class AirFreightApp {
     public static void main(String[] args) throws FileNotFoundException {
@@ -18,7 +16,7 @@ public class AirFreightApp {
 
         // Print Hedar massege
         System.out.println("----------------------------------------------------------------------------------");
-        System.out.println("-------                   Welcome to Air Freight Program                   -------");
+        System.out.println("-------                 Welcome to Air Freight Application                 -------");
         System.out.println("----------------------------------------------------------------------------------");
 
         System.out.println(
@@ -45,6 +43,11 @@ public class AirFreightApp {
                 map = new AFRouteMap();
                 File InputFile = new File("InputGraph.txt");
                 map.readGraphFromFile(InputFile);
+                /*
+                 * ********************************************************************
+                 * edit print way
+                 ********************************************************************
+                 */
                 map.PrintGraphFile();
 
                 break;
@@ -110,26 +113,31 @@ public class AirFreightApp {
         System.out.println("----------------------------------------------------------------------------------");
         System.out.println();
 
-        // Compute the minimum spanning tree using Kruskal algorithm
+        // Computing the shortest path for a specified source using Dijkstra algorithm
         start_Time = System.currentTimeMillis();
         // ********************************************************** call alg2 */
 
         end_Time = System.currentTimeMillis();
-        // ************************************************************ edit ptint
+        // Prtint run time
         System.out.println("Dijkstra algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
 
+        // Computing the shortest path for all source using Dijkstra-based algorithm
         start_Time = System.currentTimeMillis();
         // ********************************************************** call alg2 */
-        // Compute the minimum spanning tree using Prim's algorithm
 
         end_Time = System.currentTimeMillis();
-        // ************************************************************ edit ptint
+        // Prtint run time
         System.out
-                .println("Dijkstra-based shortest path algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
+                .println("Dijkstra-based all shortest path algorithm's run time is  " + (end_Time - start_Time)
+                        + " ms.\n");
 
         // Print Hedar massege
         System.out.println("----------------------------------------------------------------------------------");
-        System.out.println("-------              Thank You For Using Air Freight Program              -------");
+        System.out.println("-------             Thank You For Using Air Freight Application            -------");
         System.out.println("----------------------------------------------------------------------------------");
+
+        // Close scanner
+        input.close();
+
     }
 }
