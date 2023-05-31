@@ -45,6 +45,8 @@ public class AirFreightApp {
                 map = new AFRouteMap();
                 File InputFile = new File("InputGraph.txt");
                 map.readGraphFromFile(InputFile);
+                map.PrintGraphFile();
+
                 break;
             case 2:
                 // To disply menu of test cases can do
@@ -114,7 +116,7 @@ public class AirFreightApp {
 
         end_Time = System.currentTimeMillis();
         // ************************************************************ edit ptint
-        System.out.println("Kruskal's Algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
+        System.out.println("Dijkstra algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
 
         start_Time = System.currentTimeMillis();
         // ********************************************************** call alg2 */
@@ -122,7 +124,8 @@ public class AirFreightApp {
 
         end_Time = System.currentTimeMillis();
         // ************************************************************ edit ptint
-        System.out.println("Min-heap based Prim Algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
+        System.out
+                .println("Dijkstra-based shortest path algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
 
         // Print Hedar massege
         System.out.println("----------------------------------------------------------------------------------");
