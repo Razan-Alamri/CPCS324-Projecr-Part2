@@ -1,3 +1,11 @@
+/* CPCS324 Project Part 2
+
+ Group members: 
+    1- Razan Alamri
+    2- Khloud Alsofyani
+    3- Leen Ba Galaql
+    4- Shatha Binmahfouz
+ */
 package AirFreightApp;
 
 import java.io.File;
@@ -6,7 +14,18 @@ import java.util.Scanner;
 
 import GraphFramework.*;
 
+// AirFreightApp is a class. It is the starting point of the program and contains the main method.
 public class AirFreightApp {
+
+    /*
+     * main(): this function should be responsible for running the readGraphFromFile
+     * method for requirement
+     * 1 and running the make graph function for requirement 2 to initialize the
+     * graph and invoking the Dijkstra
+     * -based all source shortest path algorithm and displaying the returned result
+     * and the measured running
+     * time.
+     */
     public static void main(String[] args) throws FileNotFoundException {
 
         // To read input from user

@@ -1,9 +1,18 @@
+/* CPCS324 Project Part 2
+
+ Group members: 
+    1- Razan Alamri
+    2- Khloud Alsofyani
+    3- Leen Ba Galaql
+    4- Shatha Binmahfouz
+ */
 package AirFreightApp;
 
 import GraphFramework.Edge;
 import GraphFramework.Graph;
 import GraphFramework.Vertex;
 
+// AFRouteMap is a subclass of Graph, it inherits all attributes, operations & relationships. 
 public class AFRouteMap extends Graph {
 
     public AFRouteMap() {
