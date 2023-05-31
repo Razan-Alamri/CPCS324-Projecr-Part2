@@ -48,6 +48,7 @@ public class AirFreightApp {
         System.out.println("\n<<  Test Type  >>\n");
         System.out.println(" 1:  Read The Graph From File");
         System.out.println(" 2:  Create a Random Graph");
+        System.out.print("\n> From these choices, please enter your choice: ");
 
         // To save number of test Type choice
         int test_Type = input.nextInt();
@@ -81,40 +82,55 @@ public class AirFreightApp {
                 System.out.println();
                 System.out.println("< NOTE: n is the number of Locations and m is the number of Routes >");
                 System.out.print("\n> From these cases, please enter your choice: ");
-
                 // To save number of test Case choice
                 int test_Case = input.nextInt();
+
+                // Ask user about graph type (directed / undirected)
+                Boolean isDigraph = false;
+                System.out.print("Do you want the graph directed (Y/N) ? ");
+                String graphType = input.next();
+
+                // If Invalid input
+                if (!graphType.equalsIgnoreCase("Y") && !graphType.equalsIgnoreCase("N")) {
+                    System.out.println("\n<   Invalid input!  >");
+                    System.out.print("> Please enter your choice again : ");
+                    graphType = input.next();
+                }
+                // If directed graph
+                if (graphType.equalsIgnoreCase("Y")) {
+                    isDigraph = true;
+                }
 
                 // To get test case
                 switch (test_Case) {
                     case 1:
                         // Create a new graph object
                         map = new AFRouteMap();
-                        map.makeGraph(200, 10000);
+                        map.makeGraph(2000, 10000, isDigraph);
                         break;
 
                     case 2:
                         // Create a new graph object
                         map = new AFRouteMap();
-                        map.makeGraph(3000, 15000);
+                        map.makeGraph(3000, 15000, isDigraph);
                         break;
 
                     case 3:
                         // Create a new graph object
                         map = new AFRouteMap();
-                        map.makeGraph(4000, 20000);
+                        map.makeGraph(4000, 20000, isDigraph);
                         break;
 
                     case 4:
                         // Create a new graph object
                         map = new AFRouteMap();
-                        map.makeGraph(5000, 25000);
+                        map.makeGraph(5000, 25000, isDigraph);
                         break;
 
                     case 5:
                         // Create a new graph object
                         map = new AFRouteMap();
-                        map.makeGraph(6000, 30000);
+                        map.makeGraph(6000, 30000, isDigraph);
                         break;
 
                     default:
@@ -133,17 +149,23 @@ public class AirFreightApp {
         System.out.println();
 
         // Computing the shortest path for a specified source using Dijkstra algorithm
+        SingleSourceSPAlg Dijkstra_Alg = new SingleSourceSPAlg(map);
+        // Start time
         start_Time = System.currentTimeMillis();
         // ********************************************************** call alg2 */
-
+        Dijkstra_Alg.computeDijkstraAlg();
+        // End time
         end_Time = System.currentTimeMillis();
         // Prtint run time
         System.out.println("Dijkstra algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
 
         // Computing the shortest path for all source using Dijkstra-based algorithm
+        DBAllSourceSPAlg DijkstraAll_Alg = new DBAllSourceSPAlg(map);
+        // Start time
         start_Time = System.currentTimeMillis();
         // ********************************************************** call alg2 */
-
+        // DijkstraAll_Alg.computeDijkstraBasedSPAlg();
+        // End time
         end_Time = System.currentTimeMillis();
         // Prtint run time
         System.out

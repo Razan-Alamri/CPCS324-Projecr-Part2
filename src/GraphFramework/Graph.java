@@ -133,7 +133,7 @@ public abstract class Graph {
      * @param totalVertices
      * @param totalEdges
      */
-    public void makeGraph(int totalVertices, int totalEdges) {
+    public void makeGraph(int totalVertices, int totalEdges, boolean isDigraph) {
         Random random = new Random();
         // --- STEP 1: create the necessary edges to ensuring the graph is connected ---
         for (int i = 0; i < totalVertices - 1 && edgeNo < totalEdges; i++) {
