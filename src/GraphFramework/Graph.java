@@ -1,10 +1,7 @@
-/* CPCS324 Project Part 2
-
- Group members: 
-    1- Razan Alamri
-    2- Khloud Alsofyani
-    3- Leen Ba Galaql
-    4- Shatha Binmahfouz
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package GraphFramework;
 
@@ -133,7 +130,7 @@ public abstract class Graph {
      * @param totalVertices
      * @param totalEdges
      */
-    public void makeGraph(int totalVertices, int totalEdges, boolean isDigraph) {
+    public void makeGraph(int totalVertices, int totalEdges) {
         Random random = new Random();
         // --- STEP 1: create the necessary edges to ensuring the graph is connected ---
         for (int i = 0; i < totalVertices - 1 && edgeNo < totalEdges; i++) {
@@ -165,7 +162,7 @@ public abstract class Graph {
              * affecting the number of wanted edges in the graph
              * We will avoid those cases by using the following if statement
              */
-            if (adjMatrix[srcPosition][targetPosition] != null || srcPosition == targetPosition) {
+            if (adjList[srcPosition].get(targetPosition) != null || srcPosition == targetPosition) {
                 --i;
                 continue;
             }
@@ -253,7 +250,7 @@ public abstract class Graph {
      * This method to add vertex label
      *
      * @param vLabel : is the label of the vertex
-     * @return true if add the label, and false if its already addded
+     * @return true if add the label, and false if its already added
      */
     public boolean addVertLabel(char vLabel) {
         // if the label is equal 0 (default character value)
