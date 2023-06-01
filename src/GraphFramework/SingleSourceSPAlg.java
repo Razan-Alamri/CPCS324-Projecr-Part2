@@ -1,10 +1,7 @@
-/* CPCS324 Project Part 2
-
- Group members: 
-    1- Razan Alamri
-    2- Khloud Alsofyani
-    3- Leen Ba Galaql
-    4- Shatha Binmahfouz
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package GraphFramework;
 
@@ -34,7 +31,7 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
         super(graph);
         // Intialize the verticesNum variable to store the total vertices number of the
         // graph
-        verticesNum = graph.adjMatrix.length;
+        verticesNum = graph.adjList.length;
         // determine the size of the verPath array as number of vertices
         verPath = new String[verticesNum];
         // determine the size of the verDistance array as number of vertices
@@ -81,14 +78,14 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
             // Update the distance of the vertices adjacent to v
             for (int u = 0; u < verticesNum; u++) {
                 // check if the vertex is not visited before and there is edge between v and u
-                if (graph.vertices[u].isVisited != true && graph.adjMatrix[v][u] != null) {
+                if (graph.vertices[u].isVisited != true && graph.adjList[v].get(u) != null) {
                     // check if the distance from the source to v + the distance of the edge between
                     // v + u
                     // is less than the distance from source to vertex u
-                    if (verDistance[v] + graph.adjMatrix[v][u].weight < verDistance[u]) {
+                    if (verDistance[v] + graph.adjList[v].get(u).weight < verDistance[u]) {
                         // put the distance from the source to v + the distance of the edge between v +
                         // u as distance of u
-                        verDistance[u] = verDistance[v] + graph.adjMatrix[v][u].weight;
+                        verDistance[u] = verDistance[v] + graph.adjList[v].get(u).weight;
                         // Update the verPath by adding v path to the current u path
                         verPath[u] = verPath[v] + "->" + (char) (u + 65);
                     }
