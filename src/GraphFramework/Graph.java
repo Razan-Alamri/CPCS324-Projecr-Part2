@@ -5,12 +5,8 @@
  */
 package GraphFramework;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 //import AirFreightApp.AFRouteMap;
 
@@ -145,10 +141,8 @@ public abstract class Graph {
             addEdge(srcVertex, desVertex, randomWeight);
             // Add edge to set to prevent duplicates
             edgeSet.add(srcVertex + ":" + desVertex);
-            int a = srcVertex;
-            int b = desVertex;
-            char c = (char) (a + '0');
-            char d = (char) (b + '0');
+
+            // to add label of vertex
             addLabel(srcVertex);
             addLabel(desVertex);
         }

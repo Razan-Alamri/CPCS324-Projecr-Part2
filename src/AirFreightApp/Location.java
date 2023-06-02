@@ -31,7 +31,7 @@ public class Location extends Vertex {
      */
     @Override
     public String displyInfo() {
-        city = "Loc." + getLabel() + ":City" + getPosition();
+        city = "Loc." + getLabel() + ": city " + getPosition() + " ";
         return city;
     }
 

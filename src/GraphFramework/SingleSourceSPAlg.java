@@ -57,13 +57,15 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
         }
 
         // Print the result
-        System.out.println("Shortest paths from all vertices:");
+        System.out.println("Shortest paths from all location:");
         for (int i = 0; i < graph.totalVertices; i++) {
             Vertex source = graph.vertices[i];
-            System.out.println("Shortest paths from vertex " + source.label + ":");
+            System.out.println("The routes from location " + source.label + " to the rest of the locations are: ");
             for (int j = 0; j < graph.totalVertices; j++) {
-                System.out.println(source.label + " -> " + graph.vertices[j].label + " : " + distance[i][j]);
+                System.out.println(source.displyInfo() + " " + graph.vertices[j].displyInfo() + "--- route length: "
+                        + distance[i][j]);
             }
+            System.out.println();
         }
     }
 }

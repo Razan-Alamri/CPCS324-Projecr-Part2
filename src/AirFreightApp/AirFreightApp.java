@@ -68,7 +68,7 @@ public class AirFreightApp {
                  * edit print way
                  ********************************************************************
                  */
-                map.PrintGraphFile();
+                // map.PrintGraphFile();
 
                 break;
             case 2:
@@ -107,7 +107,7 @@ public class AirFreightApp {
                         // Create a new graph object
                         map = new AFRouteMap(10, 20, isDigraph);
                         map.makeGraph();
-                        map.PrintGraphFile();
+                        // map.PrintGraphFile();
                         break;
 
                     case 2:
