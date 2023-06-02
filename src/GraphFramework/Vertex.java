@@ -8,6 +8,8 @@
  */
 package GraphFramework;
 
+import java.util.LinkedList;
+
 public class Vertex {
     /**
      * label of vertex
@@ -21,6 +23,9 @@ public class Vertex {
      * to indicate the position of vertex
      */
     int position;
+    // Decleare the Linked list variable adjList to store the adjacent vertices to
+    // this vertex(have edge)
+    LinkedList<Edge> adjList;
 
     /**
      * empty constructor
@@ -35,6 +40,7 @@ public class Vertex {
      */
     public Vertex(int position) {
         this.position = position;
+        adjList = new LinkedList<>();
     }
 
     /**

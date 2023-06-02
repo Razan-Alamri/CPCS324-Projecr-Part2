@@ -105,32 +105,33 @@ public class AirFreightApp {
                 switch (test_Case) {
                     case 1:
                         // Create a new graph object
-                        map = new AFRouteMap();
-                        map.makeGraph(2000, 10000, isDigraph);
+                        map = new AFRouteMap(10, 20, isDigraph);
+                        map.makeGraph();
+                        map.PrintGraphFile();
                         break;
 
                     case 2:
                         // Create a new graph object
-                        map = new AFRouteMap();
-                        map.makeGraph(3000, 15000, isDigraph);
+                        map = new AFRouteMap(3000, 15000, isDigraph);
+                        map.makeGraph();
                         break;
 
                     case 3:
                         // Create a new graph object
-                        map = new AFRouteMap();
-                        map.makeGraph(4000, 20000, isDigraph);
+                        map = new AFRouteMap(4000, 20000, isDigraph);
+                        map.makeGraph();
                         break;
 
                     case 4:
                         // Create a new graph object
-                        map = new AFRouteMap();
-                        map.makeGraph(5000, 25000, isDigraph);
+                        map = new AFRouteMap(5000, 25000, isDigraph);
+                        map.makeGraph();
                         break;
 
                     case 5:
                         // Create a new graph object
-                        map = new AFRouteMap();
-                        map.makeGraph(6000, 30000, isDigraph);
+                        map = new AFRouteMap(6000, 30000, isDigraph);
+                        map.makeGraph();
                         break;
 
                     default:

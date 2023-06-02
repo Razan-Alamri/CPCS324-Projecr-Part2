@@ -7,6 +7,7 @@ package GraphFramework;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
@@ -59,11 +60,10 @@ public abstract class Graph {
         this.isDigraph = isDigraph;
         this.totalVertices = totalVerticesNo;
         // adjMatrix = new Edge[totalVerticesNo][totalVerticesNo];// intially null
-        vertices = new Vertex[totalVerticesNo];
-
+        vertices = new Vertex[totalVertices];
         adjList = new LinkedList[totalVerticesNo];
         for (int i = 0; i < totalVerticesNo; i++) {
-            adjList[i] = new LinkedList<Edge>();
+            adjList[i] = new LinkedList<>();
         }
 
     }
@@ -92,9 +92,10 @@ public abstract class Graph {
 
     public Edge addEdge(int v, int u, int w) {
         // if the source vertex not already created
+        // System.out.println(vertices[v].label);
         if (vertices[v] == null) {
             // create vertex with v position to be the source
-            Vertex src = new Vertex(v);
+            Vertex src = creatVertex(v);
             // add the source vertex to the vertices list
             vertices[v] = src;
             // increament vertices number by one
@@ -103,7 +104,7 @@ public abstract class Graph {
         // if the target vertex not already created
         if (vertices[u] == null) {
             // create vertex with u position to be the target
-            Vertex target = new Vertex(u);
+            Vertex target = creatVertex(u);
             // add the target vertex to the vertices list
             vertices[u] = target;
             // increament vertices number by one
@@ -130,48 +131,46 @@ public abstract class Graph {
      * @param totalVertices
      * @param totalEdges
      */
-    public void makeGraph(int totalVertices, int totalEdges) {
-        Random random = new Random();
-        // --- STEP 1: create the necessary edges to ensuring the graph is connected ---
-        for (int i = 0; i < totalVertices - 1 && edgeNo < totalEdges; i++) {
-            // generate random integer from 0 to 50(included) to weight the edge
+    public void makeGraph() {
+        Random random = new Random(); // to pick a random vertix
+        // (minimum edges = nv -1)
+        for (int i = 0; i < totalVertices - 1; i++) {
+            // i = current vertex, i + 1 = next vertix
             int randomWeight = random.nextInt(50) + 1;
-            // invoking addEdge to create edge between the pair of vertices with i and i+1
-            // position
             addEdge(i, i + 1, randomWeight);
         }
 
-        // calculate the remainig edges to generate it randomly
-        int remaning = totalEdges - (totalVertices - 1);
+        // make random graph with remaining edges
+        // (remaining edges = ne - (nv -1))
 
-        // --- STEP 2: Add the remainig edges randomly ---
-        for (int i = 0; i < remaning && edgeNo < totalEdges; i++) {
-            // source position is the vertex that will have an adjacent vertex
-            int srcPosition = random.nextInt(adjList.length);
-            // target postion randomly chooses which vertex to create edge between it and
-            // source postion
-            int targetPosition = random.nextInt(adjList.length);
-            /*
-             * Avoid self-edges or having an adjacent vertex that already exists
-             * 1- A self-edge happens when the vertex with scrPosition = targetPosition,
-             * thus the vertex will create edge with itself
-             * 2- An edge that already exists: when we want to add a new edge it already
-             * exists
-             * If one of these cases appeared, the iteration should not be counted and
-             * should be ignored without
-             * affecting the number of wanted edges in the graph
-             * We will avoid those cases by using the following if statement
-             */
-            if (adjList[srcPosition].get(targetPosition) != null || srcPosition == targetPosition) {
-                --i;
-                continue;
+        int srcVertex, desVertex;
+
+        // Create m edges randomly between vertices
+        HashSet<String> edgeSet = new HashSet<>();
+        for (int i = 0; i < (totalEdges - totalVertices + 1); i++) {
+            srcVertex = random.nextInt(totalVertices); // pick random source of the edge
+            desVertex = random.nextInt(totalVertices); // pick random distenation of the edge
+
+            if (srcVertex == desVertex || edgeSet.contains(srcVertex + ":" + desVertex)) {
+                i--; // do not count this iteration
+                continue; // generate another pairs
             }
-            // generate random integer from 0 to 50(included) to weight the edge
             int randomWeight = random.nextInt(50) + 1;
-            // invoking addEdge to create edge between the pair of vertices with srcPosition
-            // and targetPOsition position
-            addEdge(srcPosition, targetPosition, randomWeight);
+            // no edge between these vertices
+            // add an edge
+            addEdge(srcVertex, desVertex, randomWeight);
+            // Add edge to set to prevent duplicates
+            edgeSet.add(srcVertex + ":" + desVertex);
+            int a = srcVertex;
+            int b = desVertex;
+            char c = (char) (a + '0');
+            char d = (char) (b + '0');
+            addLabel(srcVertex);
+            addLabel(desVertex);
+            System.out.println(c + "  lllll   " + d);
+
         }
+        updateAllNullsValues();
     }
 
     /**
@@ -224,10 +223,11 @@ public abstract class Graph {
             // Note: position= label-65
             Edge edge = addEdge(srcLabel - 65, targetLabel - 65, wieght);
             // call add vertex position method to add the source vertex label
-            addVertLabel(srcLabel);
+            addLabel(srcLabel);
             // calladd vertex position method to add the target vertex label
-            addVertLabel(targetLabel);
+            addLabel(targetLabel);
         }
+        ;
     }
 
     /**
@@ -252,15 +252,53 @@ public abstract class Graph {
      * @param vLabel : is the label of the vertex
      * @return true if add the label, and false if its already added
      */
-    public boolean addVertLabel(char vLabel) {
-        // if the label is equal 0 (default character value)
-        if (vertices[vLabel - 65].label == 0) {
-            // store the label
-            vertices[vLabel - 65].label = vLabel;
-            // return true-->the label added sucessfully
-            return true;
-        }
-        // the label not added because it already there
-        return false;
+    /*
+     * public boolean addVertLabel(char vLabel) {
+     * // if the label is equal 0 (default character value)
+     * if (vertices[vLabel - 65].label == 0) {
+     * // store the label
+     * vertices[vLabel - 65].label = vLabel;
+     * // return true-->the label added sucessfully
+     * return true;
+     * }
+     * // the label not added because it already there
+     * return false;
+     * }
+     */
+
+    public void addLabel(char lable) {
+        vertices[lable - 65].label = lable;
     }
+
+    public void addLabel(int d) {
+        if (vertices[d].label == 0) {
+            int b = d;
+            char c = (char) (b + '0');
+            vertices[d].label = c;
+        }
+
+    }
+
+    /**
+     * method to replace all null value with value that greater than the range of
+     * graph weights
+     * and replace the distance form a vertex to itself by zero
+     */
+    public void updateAllNullsValues() {
+        // loop to go through all Edges
+        for (int i = 0; i < adjList.length; i++) {
+            for (int j = 0; j < adjList[i].size(); j++) {
+                if (i == j && adjList[i].get(j) == null)// if i==j
+                    // smallest distance (weight from the vertex to itself)
+
+                    adjList[i].add(creatEdge(0));
+
+                else if (adjList[i].get(j) == null) { // if there is no edges
+                    adjList[i].add(creatEdge(999999)); // set infinity(a number out of the range of wieghts)
+                } // end of eles if
+
+            } // end of inner loop
+
+        } // end of outer loop
+    }// end of method
 }
