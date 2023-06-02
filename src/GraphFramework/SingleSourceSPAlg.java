@@ -27,7 +27,6 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
      * @param graph
      */
     public SingleSourceSPAlg(Graph graph) {
-        // Call the super constructor
         super(graph);
         // Intialize the verticesNum variable to store the total vertices number of the
         // graph
