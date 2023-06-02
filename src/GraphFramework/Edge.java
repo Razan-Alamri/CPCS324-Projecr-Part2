@@ -9,55 +9,59 @@
 package GraphFramework;
 
 public abstract class Edge {
-    /**
-     * source vertex of edge
-     */
+
     Vertex source;
-    /**
-     * target vertex of edge
-     */
     Vertex target;
-    /**
-     * edge weight
-     */
+    Vertex parent;
     int weight;
 
-    /**
-     * empty constructor of class
-     */
     public Edge() {
 
     }
 
-    /**
-     * constructor
-     * 
-     * @param weight weight of edge
-     */
     public Edge(int weight) {
         this.weight = weight;
     }
 
-    /**
-     * constructor with parameters
-     * 
-     * @param source source vertex of edge
-     * @param target target vertex of edge
-     * @param weight edge weight
-     */
     public Edge(Vertex source, Vertex target, int weight) {
         this.source = source;
         this.target = target;
         this.weight = weight;
-
+        this.parent = source;
     }
 
-    /**
-     * 
-     * @return string that print edge
-     */
-    @Override
-    public String toString() {
-        return "source " + source.label + "-" + "destenation " + target.label + ": " + weight;
+    public Vertex getSource() {
+        return source;
     }
+
+    public void setSource(Vertex source) {
+        this.source = source;
+    }
+
+    public Vertex getTarget() {
+        return target;
+    }
+
+    public void setTarget(Vertex target) {
+        this.target = target;
+    }
+
+    public Vertex getParent() {
+        return parent;
+    }
+
+    public void setParent(Vertex parent) {
+        this.parent = parent;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    // Method is responsible for displaying the information of the class attributes.
+    public abstract String displyInfo();
 }

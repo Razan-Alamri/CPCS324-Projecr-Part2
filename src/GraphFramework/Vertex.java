@@ -10,7 +10,7 @@ package GraphFramework;
 
 import java.util.LinkedList;
 
-public class Vertex {
+public abstract class Vertex {
     /**
      * label of vertex
      */
@@ -43,14 +43,48 @@ public class Vertex {
         adjList = new LinkedList<>();
     }
 
-    /**
-     * 
-     * method to get position of vertex
-     * 
-     * @return the position number
-     */
-    public int getVertPos() {
+    // Check if this vertex is adjacent to another vertex
+    public boolean isAdjacent(Vertex other) {
+        for (Edge edge : adjList) {
+            if (edge.target == other) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public char getLabel() {
+        return label;
+    }
+
+    public void setLabel(char label) {
+        this.label = label;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public void setVisited(boolean isVisited) {
+        this.isVisited = isVisited;
+    }
+
+    public int getPosition() {
         return position;
     }
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public LinkedList<Edge> getAdjList() {
+        return adjList;
+    }
+
+    public void setAdjList(LinkedList<Edge> adjList) {
+        this.adjList = adjList;
+    }
+
+    // Method is responsible for displaying the information of the class attributes.
+    public abstract String displyInfo();
 }

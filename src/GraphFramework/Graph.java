@@ -20,7 +20,7 @@ public abstract class Graph {
     // deleare verticesNo variable number of vertices of the graph.
     // It should be incremented whenever a method a new object is added to the
     // vertex list.
-    int verticesNo;
+    // int verticesNo;
     // deleare edgeNo variable to store edge's number of the graph.
     // It should be incremented by one in case add edge in directed graph and by two
     // if it is an undirected graph.
@@ -38,7 +38,7 @@ public abstract class Graph {
     // decleare variable to store the total number of vertices
     int totalVertices;
 
-    LinkedList<Edge>[] adjList;
+    // LinkedList<Edge>[] adjList;
 
     // ----------------------------Constructors section----------------------------
     /**
@@ -48,24 +48,11 @@ public abstract class Graph {
 
     }
 
-    /**
-     * Constructor with specific parameter
-     *
-     * @param totalVerticesNo -- number of vertices of graph
-     * @param totalEdgesNo    -- number of edges between the vertices
-     * @param isDigraph       -- its directed graph or undirected
-     */
     public Graph(int totalVerticesNo, int totalEdgesNo, boolean isDigraph) {
         this.totalEdges = totalEdgesNo;
         this.isDigraph = isDigraph;
         this.totalVertices = totalVerticesNo;
-        // adjMatrix = new Edge[totalVerticesNo][totalVerticesNo];// intially null
         vertices = new Vertex[totalVertices];
-        adjList = new LinkedList[totalVerticesNo];
-        for (int i = 0; i < totalVerticesNo; i++) {
-            adjList[i] = new LinkedList<>();
-        }
-
     }
 
     // ----------------------------Methods section----------------------------
@@ -98,8 +85,8 @@ public abstract class Graph {
             Vertex src = creatVertex(v);
             // add the source vertex to the vertices list
             vertices[v] = src;
-            // increament vertices number by one
-            verticesNo++;
+            // increament vertices number by one ************************
+            // verticesNo++;
         }
         // if the target vertex not already created
         if (vertices[u] == null) {
@@ -107,15 +94,15 @@ public abstract class Graph {
             Vertex target = creatVertex(u);
             // add the target vertex to the vertices list
             vertices[u] = target;
-            // increament vertices number by one
-            verticesNo++;
+            // increament vertices number by one **********************************
+            // verticesNo++;
         }
         Edge e = creatEdge(vertices[v], vertices[u], w);
-        adjList[v].add(e);
+        vertices[v].adjList.add(e);
         edgeNo++;
         if (!isDigraph) {
             Edge e2 = creatEdge(vertices[u], vertices[v], w);
-            adjList[u].add(e2);
+            vertices[u].adjList.add(e2);
             edgeNo++;
         }
         return e;
@@ -127,9 +114,6 @@ public abstract class Graph {
      * source and target vertices if it not already created) 2- make the
      * remaining edge with random weight using addEdge (and addEdge will create
      * source and target vertices if it not already created)
-     *
-     * @param totalVertices
-     * @param totalEdges
      */
     public void makeGraph() {
         Random random = new Random(); // to pick a random vertix
@@ -167,18 +151,12 @@ public abstract class Graph {
             char d = (char) (b + '0');
             addLabel(srcVertex);
             addLabel(desVertex);
-            System.out.println(c + "  lllll   " + d);
-
         }
-        updateAllNullsValues();
     }
 
     /**
      * This method reads the edges and vertices from the text file whose name is
      * specified by the parameter filename and place data in a Graph object.
-     *
-     * @param fileName
-     * @throws FileNotFoundException
      */
     public void readGraphFromFile(File fileName) throws FileNotFoundException {
         // create scanner object to read from the file
@@ -195,12 +173,7 @@ public abstract class Graph {
         totalVertices = readFile.nextInt();
         // read the number of edges and store it in the totalEdges variable
         totalEdges = readFile.nextInt();
-        // initialize the matrix with number of vertices as number of row
-        // and for each row the number of column it will be number of vertice
-        adjList = new LinkedList[totalVertices];
-        for (int i = 0; i < totalVertices; i++) {
-            adjList[i] = new LinkedList<Edge>();
-        }
+
         // initialize the vertices array with number of vertices as size
         vertices = new Vertex[totalVertices];
 
@@ -221,12 +194,15 @@ public abstract class Graph {
             // invoke addEdge to add edge between the source and target position
             // and store the return edge object
             // Note: position= label-65
-            Edge edge = addEdge(srcLabel - 65, targetLabel - 65, wieght);
+            // Edge edge =
+            addEdge(srcLabel - 65, targetLabel - 65, wieght);
             // call add vertex position method to add the source vertex label
             addLabel(srcLabel);
             // calladd vertex position method to add the target vertex label
             addLabel(targetLabel);
         }
+        // Close scanner
+        readFile.close();
         ;
     }
 
@@ -238,33 +214,17 @@ public abstract class Graph {
     public void PrintGraphFile() {
         System.out.println("Adjacency List:");
         for (int i = 0; i < totalVertices; i++) {
-            System.out.print(vertices[i].label + " -> ");
-            for (Edge e : adjList[i]) {
-                System.out.print(vertices[e.target.position].label + "(" + e.weight + ") ");
+            int length = 0;
+            System.out.print(vertices[i].displyInfo() + " -> ");
+            for (Edge e : vertices[i].adjList) {
+                System.out.print(vertices[e.target.position].displyInfo());
+                length += e.getWeight();
+
             }
+            System.out.print(" --- route length: " + length);
             System.out.println();
         }
     }
-
-    /**
-     * This method to add vertex label
-     *
-     * @param vLabel : is the label of the vertex
-     * @return true if add the label, and false if its already added
-     */
-    /*
-     * public boolean addVertLabel(char vLabel) {
-     * // if the label is equal 0 (default character value)
-     * if (vertices[vLabel - 65].label == 0) {
-     * // store the label
-     * vertices[vLabel - 65].label = vLabel;
-     * // return true-->the label added sucessfully
-     * return true;
-     * }
-     * // the label not added because it already there
-     * return false;
-     * }
-     */
 
     public void addLabel(char lable) {
         vertices[lable - 65].label = lable;
@@ -284,21 +244,24 @@ public abstract class Graph {
      * graph weights
      * and replace the distance form a vertex to itself by zero
      */
-    public void updateAllNullsValues() {
-        // loop to go through all Edges
-        for (int i = 0; i < adjList.length; i++) {
-            for (int j = 0; j < adjList[i].size(); j++) {
-                if (i == j && adjList[i].get(j) == null)// if i==j
-                    // smallest distance (weight from the vertex to itself)
-
-                    adjList[i].add(creatEdge(0));
-
-                else if (adjList[i].get(j) == null) { // if there is no edges
-                    adjList[i].add(creatEdge(999999)); // set infinity(a number out of the range of wieghts)
-                } // end of eles if
-
-            } // end of inner loop
-
-        } // end of outer loop
-    }// end of method
+    /*
+     * public void updateAllNullsValues() {
+     * // loop to go through all Edges
+     * for (int i = 0; i < adjList.length; i++) {
+     * for (int j = 0; j < adjList[i].size(); j++) {
+     * if (i == j && adjList[i].get(j) == null)// if i==j
+     * // smallest distance (weight from the vertex to itself)
+     * 
+     * adjList[i].add(creatEdge(0));
+     * 
+     * else if (adjList[i].get(j) == null) { // if there is no edges
+     * adjList[i].add(creatEdge(999999)); // set infinity(a number out of the range
+     * of wieghts)
+     * } // end of eles if
+     * 
+     * } // end of inner loop
+     * 
+     * } // end of outer loop
+     * }// end of method
+     */
 }

@@ -29,12 +29,11 @@ public class Route extends Edge {
      * Override method that responsible for displaying
      * the information of the class attributes
      */
-    /*
-     * @Override
-     * public String displyInfo() {
-     * 
-     * return "Office No." + getLabel();
-     * }
-     */
+
+    @Override
+    public String displyInfo() {
+
+        return "--- route length: " + getWeight();
+    }
 
 }

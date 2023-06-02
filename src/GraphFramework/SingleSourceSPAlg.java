@@ -5,108 +5,65 @@
  */
 package GraphFramework;
 
+import java.util.*;
+
 public class SingleSourceSPAlg extends ShortestPathAlgorithm {
-    // ----------------------------Attributes Section----------------------------
+    // Constructor with specific parameter
 
-    // Decleare the verticesNum variable to store the total vertices number of the
-    // graph
-    int verticesNum;
-    // Decleare verPath array to store the path from the source to the vertex
-    String[] verPath = new String[verticesNum];
-    // Decleare verDistance array to store the distance from the source to the
-    // vertex
-    int[] verDistance = new int[verticesNum];
-    // Decleare and initialize constant variable to store infinity number
-    // (it's much larger than the range of graph vertices weight)
-    final int INFINITY = 100000;
-
-    // ----------------------------Constructors Section--------------------------
-    /**
-     * Constructor with specific parameters
-     *
-     * @param graph
-     */
     public SingleSourceSPAlg(Graph graph) {
         super(graph);
-        // Intialize the verticesNum variable to store the total vertices number of the
-        // graph
-        verticesNum = graph.adjList.length;
-        // determine the size of the verPath array as number of vertices
-        verPath = new String[verticesNum];
-        // determine the size of the verDistance array as number of vertices
-        verDistance = new int[verticesNum];
+
     }
 
-    // ----------------------------Methods section-------------------------------
-    /**
-     * This method will use the graph to use Dijkstra algorithm to compute the
-     * length of the shortest paths from the chosen source to the rest of the
-     * vertices.
-     */
     public void computeDijkstraAlg() {
-        // Intially, set all the vertices distance as infinity
-        for (int i = 0; i < verticesNum; i++) {
-            verDistance[i] = INFINITY;
+        // Initialize the distance and visited arrays
+        int[][] distance = new int[graph.totalVertices][graph.totalVertices];
+        boolean[] visited = new boolean[graph.totalVertices];
+        for (int i = 0; i < graph.totalVertices; i++) {
+            Arrays.fill(distance[i], Integer.MAX_VALUE);
+            visited[i] = false;
         }
 
-        // Take the vertex with position 0 as source
-        // make the distance between the source to itself 0
-        verDistance[0] = 0;
-        // intialize the source path
-        verPath[0] = "A";
+        // Perform Dijkstra algorithm from each vertex
+        for (int i = 0; i < graph.totalVertices; i++) {
+            final int sourceIndex = i;
+            Vertex source = graph.vertices[sourceIndex];
+            distance[sourceIndex][source.position] = 0;
 
-        // for loop to go through all vertices
-        for (int i = 0; i < verticesNum; i++) {
-            // intially set the v=-1 and the min distance as infinity until find vertex with
-            // minimum distance
-            int v = -1;
-            int minDist = INFINITY;
-            // find the minimum verDistance among all the vertices
-            for (int j = 0; j < verticesNum; j++) {
-                // check the vertex is not visited before and distance is less than the minimum
-                // distance so far
-                if (graph.vertices[j].isVisited != true && verDistance[j] < minDist) {
-                    // set distance of vertex as minimum distance
-                    minDist = verDistance[j];
-                    // and put the vertex position as v
-                    v = j;
+            PriorityQueue<Vertex> pq = new PriorityQueue<>(graph.totalVertices, new Comparator<Vertex>() {
+                @Override
+                public int compare(Vertex v1, Vertex v2) {
+                    return distance[sourceIndex][v1.position] - distance[sourceIndex][v2.position];
                 }
-            }
-            // set the vertex v (with minimum distance) as visited
-            graph.vertices[v].isVisited = true;
-            // Update the distance of the vertices adjacent to v
-            for (int u = 0; u < verticesNum; u++) {
-                // check if the vertex is not visited before and there is edge between v and u
-                if (graph.vertices[u].isVisited != true && graph.adjList[v].get(u) != null) {
-                    // check if the distance from the source to v + the distance of the edge between
-                    // v + u
-                    // is less than the distance from source to vertex u
-                    if (verDistance[v] + graph.adjList[v].get(u).weight < verDistance[u]) {
-                        // put the distance from the source to v + the distance of the edge between v +
-                        // u as distance of u
-                        verDistance[u] = verDistance[v] + graph.adjList[v].get(u).weight;
-                        // Update the verPath by adding v path to the current u path
-                        verPath[u] = verPath[v] + "->" + (char) (u + 65);
+            });
+            pq.add(source);
+
+            while (!pq.isEmpty()) {
+                Vertex curr = pq.poll();
+                visited[curr.position] = true;
+                for (Edge e : curr.adjList) {
+                    Vertex v = e.target;
+                    if (!visited[v.position] && distance[sourceIndex][curr.position] != Integer.MAX_VALUE &&
+                            distance[sourceIndex][curr.position] + e.weight < distance[sourceIndex][v.position]) {
+                        distance[sourceIndex][v.position] = distance[sourceIndex][curr.position] + e.weight;
+                        pq.remove(v);
+                        pq.add(v);
                     }
                 }
             }
+
+            // Reset visited array for next iteration
+            Arrays.fill(visited, false);
+        }
+
+        // Print the result
+        System.out.println("Shortest paths from all vertices:");
+        for (int i = 0; i < graph.totalVertices; i++) {
+            Vertex source = graph.vertices[i];
+            System.out.println("Shortest paths from vertex " + source.label + ":");
+            for (int j = 0; j < graph.totalVertices; j++) {
+                System.out.println(source.label + " -> " + graph.vertices[j].label + " : " + distance[i][j]);
+            }
         }
     }
-
-    /**
-     * This method will print the graph after find the length of the shortest
-     * paths between every pair in the graph using Floyd-Warshall algorithm
-     *
-     */
-    public void printPath() {
-        // print all the vertices' distance with their path
-        System.out.println("Dijkstra Algorithm: ");
-        System.out.println("\n*** From Vertex " + "A" + " to Other Vertices in Graph *** \n");
-        for (int i = 0; i < verticesNum; i++) {
-            System.out.println("  > From " + "A" + " --> " + (char) (i + 65));
-            System.out.println("      The Path is : " + verPath[i] + " && The Cost is : " + verDistance[i]);
-
-        }
-    }
-
 }

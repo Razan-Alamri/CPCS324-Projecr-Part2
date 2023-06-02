@@ -18,6 +18,7 @@ public class Location extends Vertex {
 
     public Location(int id) {
         super(id);
+
     }
 
     public Location() {
@@ -28,11 +29,10 @@ public class Location extends Vertex {
      * Override method that responsible for displaying
      * the information of the class attributes
      */
-    /*
-     * @Override
-     * public String displyInfo() {
-     * 
-     * return "Office No." + getLabel();
-     * }
-     */
+    @Override
+    public String displyInfo() {
+        city = "Loc." + getLabel() + ":City" + getPosition();
+        return city;
+    }
+
 }
