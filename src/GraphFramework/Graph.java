@@ -1,7 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* CPCS324 Project Part 2
+
+ Group members: 
+    1- Razan Alamri
+    2- Khloud Alsofyani
+    3- Leen Ba Galaql
+    4- Shatha Binmahfouz
  */
 package GraphFramework;
 
@@ -24,17 +27,12 @@ public abstract class Graph {
     // decleare boolean variable true
     // -->if the graph is directed graph, false -->if the graph is undirected
     public boolean isDigraph;
-    // decleare 2D array to store matrix this matrix will represent the edge between
-    // pair of two vertex
-    // Edge[][] adjMatrix;
     // decleare variable to store the list of vertices of a graph
-    Vertex[] vertices;
+    public Vertex[] vertices;
     // decleare variable to store the total number of edges
     int totalEdges;
     // decleare variable to store the total number of vertices
     int totalVertices;
-
-    // LinkedList<Edge>[] adjList;
 
     // ----------------------------Constructors section----------------------------
     /**
@@ -72,37 +70,6 @@ public abstract class Graph {
     public abstract Edge creatEdge(int w);
 
     public abstract Edge creatEdge();
-
-    public Edge addEdge(int v, int u, int w) {
-        // if the source vertex not already created
-        // System.out.println(vertices[v].label);
-        if (vertices[v] == null) {
-            // create vertex with v position to be the source
-            Vertex src = creatVertex(v);
-            // add the source vertex to the vertices list
-            vertices[v] = src;
-            // increament vertices number by one ************************
-            // verticesNo++;
-        }
-        // if the target vertex not already created
-        if (vertices[u] == null) {
-            // create vertex with u position to be the target
-            Vertex target = creatVertex(u);
-            // add the target vertex to the vertices list
-            vertices[u] = target;
-            // increament vertices number by one **********************************
-            // verticesNo++;
-        }
-        Edge e = creatEdge(vertices[v], vertices[u], w);
-        vertices[v].adjList.add(e);
-        edgeNo++;
-        if (!isDigraph) {
-            Edge e2 = creatEdge(vertices[u], vertices[v], w);
-            vertices[u].adjList.add(e2);
-            edgeNo++;
-        }
-        return e;
-    }
 
     /**
      * This method to make graph 1- first make the nessecary edge with random
@@ -200,12 +167,42 @@ public abstract class Graph {
         ;
     }
 
+    public Edge addEdge(int v, int u, int w) {
+        // if the source vertex not already created
+        // System.out.println(vertices[v].label);
+        if (vertices[v] == null) {
+            // create vertex with v position to be the source
+            Vertex src = creatVertex(v);
+            // add the source vertex to the vertices list
+            vertices[v] = src;
+        }
+        // if the target vertex not already created
+        if (vertices[u] == null) {
+            // create vertex with u position to be the target
+            Vertex target = creatVertex(u);
+            // add the target vertex to the vertices list
+            vertices[u] = target;
+        }
+        Edge e = creatEdge(vertices[v], vertices[u], w);
+        vertices[v].adjList.add(e);
+        /*
+         * Increment the edge count by 1 If it is a undirected graph
+         * and by 2 if directed graph
+         */
+        edgeNo++;
+        if (!isDigraph) {
+            Edge e2 = creatEdge(vertices[u], vertices[v], w);
+            vertices[u].adjList.add(e2);
+            edgeNo++;
+        }
+        return e;
+    }
+
     /**
      * This method will print the graph after read it from the file and create
      * the matrix
      */
-
-    public void PrintGraphFile() {
+    public void PrintGraph() {
         System.out.println("Adjacency List:");
         for (int i = 0; i < totalVertices; i++) {
             int length = 0;
@@ -213,17 +210,18 @@ public abstract class Graph {
             for (Edge e : vertices[i].adjList) {
                 System.out.print(vertices[e.target.position].displyInfo());
                 length += e.getWeight();
-
             }
             System.out.print(" --- route length: " + length);
             System.out.println();
         }
     }
 
+    // For add label from file
     public void addLabel(char lable) {
         vertices[lable - 65].label = lable;
     }
 
+    // For add label with uniqe number
     public void addLabel(int d) {
         if (vertices[d].label == 0) {
             int b = d;
@@ -233,29 +231,43 @@ public abstract class Graph {
 
     }
 
-    /**
-     * method to replace all null value with value that greater than the range of
-     * graph weights
-     * and replace the distance form a vertex to itself by zero
-     */
-    /*
-     * public void updateAllNullsValues() {
-     * // loop to go through all Edges
-     * for (int i = 0; i < adjList.length; i++) {
-     * for (int j = 0; j < adjList[i].size(); j++) {
-     * if (i == j && adjList[i].get(j) == null)// if i==j
-     * // smallest distance (weight from the vertex to itself)
-     * 
-     * adjList[i].add(creatEdge(0));
-     * 
-     * else if (adjList[i].get(j) == null) { // if there is no edges
-     * adjList[i].add(creatEdge(999999)); // set infinity(a number out of the range
-     * of wieghts)
-     * } // end of eles if
-     * 
-     * } // end of inner loop
-     * 
-     * } // end of outer loop
-     * }// end of method
-     */
+    public int getEdgeNo() {
+        return edgeNo;
+    }
+
+    public void setEdgeNo(int edgeNo) {
+        this.edgeNo = edgeNo;
+    }
+
+    public boolean isDigraph() {
+        return isDigraph;
+    }
+
+    public void setDigraph(boolean isDigraph) {
+        this.isDigraph = isDigraph;
+    }
+
+    public Vertex[] getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(Vertex[] vertices) {
+        this.vertices = vertices;
+    }
+
+    public int getTotalEdges() {
+        return totalEdges;
+    }
+
+    public void setTotalEdges(int totalEdges) {
+        this.totalEdges = totalEdges;
+    }
+
+    public int getTotalVertices() {
+        return totalVertices;
+    }
+
+    public void setTotalVertices(int totalVertices) {
+        this.totalVertices = totalVertices;
+    }
 }

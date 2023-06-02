@@ -1,71 +1,99 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* CPCS324 Project Part 2
+
+ Group members: 
+    1- Razan Alamri
+    2- Khloud Alsofyani
+    3- Leen Ba Galaql
+    4- Shatha Binmahfouz
  */
 package GraphFramework;
 
 import java.util.*;
 
 public class SingleSourceSPAlg extends ShortestPathAlgorithm {
-    // Constructor with specific parameter
-
+    /*
+     * int[] distance;
+     * int[] previous;
+     * boolean[] visited;
+     * Vertex source;
+     */
+    // Constructor
     public SingleSourceSPAlg(Graph graph) {
+        //
         super(graph);
+    }
+
+    /* */
+    public void computeDijkstraAlg(Vertex source, Boolean isFile) {
+        int[] distance = new int[graph.totalVertices];
+        int[] previous = new int[graph.totalVertices];
+        boolean[] visited = new boolean[graph.totalVertices];
+        // this.source = source;
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        Arrays.fill(previous, -1);
+        Arrays.fill(visited, false);
+
+        distance[source.position] = 0;
+
+        PriorityQueue<Vertex> pq = new PriorityQueue<>(graph.totalVertices, new Comparator<Vertex>() {
+            @Override
+            public int compare(Vertex v1, Vertex v2) {
+                return distance[v1.position] - distance[v2.position];
+            }
+        });
+        pq.add(source);
+
+        while (!pq.isEmpty()) {
+            Vertex curr = pq.poll();
+            visited[curr.position] = true;
+            for (Edge e : curr.adjList) {
+                Vertex v = e.target;
+                if (!visited[v.position] && distance[curr.position] != Integer.MAX_VALUE &&
+                        distance[curr.position] + e.weight < distance[v.position]) {
+                    distance[v.position] = distance[curr.position] + e.weight;
+                    previous[v.position] = curr.position;
+                    pq.remove(v);
+                    pq.add(v);
+                }
+            }
+        }
+        if (isFile) {
+            // Print the result
+            System.out.println("Shortest paths from location " + source.label + ":");
+            for (int i = 0; i < graph.totalVertices; i++) {
+                if (distance[i] == Integer.MAX_VALUE) {
+                    System.out.println(source.displyInfo() + " has no path to " + graph.vertices[i].displyInfo());
+                    continue;
+                } else {
+                    System.out.print(source.displyInfo() + " ");
+                }
+                LinkedList<Integer> path = new LinkedList<>();
+                int curr = i;
+                while (curr != -1) {
+                    path.addFirst(curr);
+                    curr = previous[curr];
+                }
+                for (int j = 0; j < path.size(); j++) {
+                    System.out.print(graph.vertices[path.get(j)].displyInfo());
+                    if (j < path.size() - 1) {
+                        System.out.print(" ");
+                    }
+                }
+
+                System.out.print("--- route length: " + distance[i]);
+                System.out.println();
+            }
+            System.out.println("----------------------------------------------------------------------------------");
+        }
 
     }
 
-    public void computeDijkstraAlg() {
-        // Initialize the distance and visited arrays
-        int[][] distance = new int[graph.totalVertices][graph.totalVertices];
-        boolean[] visited = new boolean[graph.totalVertices];
+    public void print() {
         for (int i = 0; i < graph.totalVertices; i++) {
-            Arrays.fill(distance[i], Integer.MAX_VALUE);
-            visited[i] = false;
-        }
+            System.out.println("  > From " + "A" + " --> " + (char) (i + 65));
+            // System.out.println(" The Path is : " + verPath[i] + " && The Cost is : " +
+            // verDistance[i]);
 
-        // Perform Dijkstra algorithm from each vertex
-        for (int i = 0; i < graph.totalVertices; i++) {
-            final int sourceIndex = i;
-            Vertex source = graph.vertices[sourceIndex];
-            distance[sourceIndex][source.position] = 0;
-
-            PriorityQueue<Vertex> pq = new PriorityQueue<>(graph.totalVertices, new Comparator<Vertex>() {
-                @Override
-                public int compare(Vertex v1, Vertex v2) {
-                    return distance[sourceIndex][v1.position] - distance[sourceIndex][v2.position];
-                }
-            });
-            pq.add(source);
-
-            while (!pq.isEmpty()) {
-                Vertex curr = pq.poll();
-                visited[curr.position] = true;
-                for (Edge e : curr.adjList) {
-                    Vertex v = e.target;
-                    if (!visited[v.position] && distance[sourceIndex][curr.position] != Integer.MAX_VALUE &&
-                            distance[sourceIndex][curr.position] + e.weight < distance[sourceIndex][v.position]) {
-                        distance[sourceIndex][v.position] = distance[sourceIndex][curr.position] + e.weight;
-                        pq.remove(v);
-                        pq.add(v);
-                    }
-                }
-            }
-
-            // Reset visited array for next iteration
-            Arrays.fill(visited, false);
-        }
-
-        // Print the result
-        System.out.println("Shortest paths from all location:");
-        for (int i = 0; i < graph.totalVertices; i++) {
-            Vertex source = graph.vertices[i];
-            System.out.println("The routes from location " + source.label + " to the rest of the locations are: ");
-            for (int j = 0; j < graph.totalVertices; j++) {
-                System.out.println(source.displyInfo() + " " + graph.vertices[j].displyInfo() + "--- route length: "
-                        + distance[i][j]);
-            }
-            System.out.println();
         }
     }
 }

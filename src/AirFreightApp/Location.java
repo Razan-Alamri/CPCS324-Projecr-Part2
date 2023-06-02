@@ -13,15 +13,18 @@ import GraphFramework.Vertex;
 //Location is a subclass of Vertex, it inherits all attributes, operations & relationships. 
 public class Location extends Vertex {
 
-    // Data F
+    // Data filed
     private String city;
 
+    // Contructors
     public Location(int id) {
+        // Call a super class "Vertex"
         super(id);
 
     }
 
     public Location() {
+        // Call a super class "Vertex"
         super();
     }
 
