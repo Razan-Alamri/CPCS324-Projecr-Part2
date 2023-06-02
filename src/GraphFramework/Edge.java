@@ -9,12 +9,16 @@
 package GraphFramework;
 
 public abstract class Edge {
+    
+    //---------------------- Attributes ---------------------------------------
 
-    Vertex source;
+    Vertex src;
     Vertex target;
     Vertex parent;
     int weight;
 
+        //---------------------- Constructures ---------------------------------------
+    //Default
     public Edge() {
 
     }
@@ -23,19 +27,21 @@ public abstract class Edge {
         this.weight = weight;
     }
 
-    public Edge(Vertex source, Vertex target, int weight) {
-        this.source = source;
+    public Edge(Vertex src, Vertex target, int weight) {
+        this.src = src;
         this.target = target;
         this.weight = weight;
-        this.parent = source;
+        this.parent = src;
     }
 
+            //---------------------- Methods ---------------------------------------
+
     public Vertex getSource() {
-        return source;
+        return src;
     }
 
     public void setSource(Vertex source) {
-        this.source = source;
+        this.src = source;
     }
 
     public Vertex getTarget() {
@@ -62,6 +68,6 @@ public abstract class Edge {
         this.weight = weight;
     }
 
-    // Method is responsible for displaying the information of the class attributes.
+    // Method for displaying the information of the Edge class attributes.
     public abstract String displyInfo();
 }
