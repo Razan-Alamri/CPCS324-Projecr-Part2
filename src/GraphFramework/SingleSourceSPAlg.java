@@ -25,16 +25,21 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
     public void computeDijkstraAlg(Vertex source, Boolean isFile) {
 
         // Initialize the necessary data structures
-        int[] distance = new int[graph.totalVertices]; // Array to hold the distances from source to each vertex
-        int[] previous = new int[graph.totalVertices]; // Array to hold the previous vertex on the shortest path from
-                                                       // source to each vertex
-        boolean[] visited = new boolean[graph.totalVertices]; // Array to keep track of visited vertices
-
-        Arrays.fill(distance, Integer.MAX_VALUE); // Set all distances to infinity initially
-        Arrays.fill(previous, -1); // Set all previous vertices to -1 initially
-        Arrays.fill(visited, false); // Set all vertices as unvisited initially
-
-        distance[source.position] = 0; // Set the distance to the source vertex as 0
+        // Array to hold the distances from source to each vertex
+        int[] distance = new int[graph.totalVertices];
+        // Array to hold the previous vertex on the shortest path from
+        // source to each vertex
+        int[] previous = new int[graph.totalVertices];
+        // Array to keep track of visited vertices
+        boolean[] visited = new boolean[graph.totalVertices];
+        // Set all distances to infinity initially
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        // Set all previous vertices to -1 initially
+        Arrays.fill(previous, -1);
+        // Set all vertices as unvisited initially
+        Arrays.fill(visited, false);
+        // Set the distance to the source vertex as 0
+        distance[source.position] = 0;
 
         // Create a priority queue to store unvisited vertices and order them by their
         // distance from the source vertex
@@ -44,21 +49,28 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
                 return distance[v1.position] - distance[v2.position];
             }
         });
-        pq.add(source); // Add the source vertex to the priority queue
+        // Add the source vertex to the priority queue
+        pq.add(source);
 
         // Run the Dijkstra's algorithm loop
         while (!pq.isEmpty()) {
-            Vertex curr = pq.poll(); // Select the unvisited vertex with the smallest distance from the priority
-                                     // queue
-            visited[curr.position] = true; // Mark the current vertex as visited
-            for (Edge e : curr.adjList) { // Iterate over the adjacent edges of the current vertex
-                Vertex v = e.target; // Get the adjacent vertex
+            // Select the unvisited vertex with the smallest distance from the priority
+            // queue
+            Vertex curr = pq.poll();
+            // Mark the current vertex as visited
+            visited[curr.position] = true;
+            // Iterate over the adjacent edges of the current vertex
+            for (Edge e : curr.adjList) {
+                // Get the adjacent vertex
+                Vertex v = e.target;
                 if (!visited[v.position] && distance[curr.position] != Integer.MAX_VALUE &&
                         distance[curr.position] + e.weight < distance[v.position]) {
-                    // If the adjacent vertex is unvisited and a shorter path to it is found through
-                    // the current vertex,
-                    // update its distance and previous vertex information and add it back to the
-                    // priority queue
+                    /*
+                     * If the adjacent vertex is unvisited and a shorter path to it is found through
+                     * the current vertex,
+                     * update its distance and previous vertex information and add it back to the
+                     * priority queue
+                     */
                     distance[v.position] = distance[curr.position] + e.weight;
                     previous[v.position] = curr.position;
                     pq.remove(v);
@@ -84,17 +96,20 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
                 LinkedList<Integer> path = new LinkedList<>();
                 int curr = i;
                 while (curr != -1) {
-                    path.addFirst(curr); // Add the current vertex to the front of the path
-                    curr = previous[curr]; // Get the previous vertex on the shortest path to the current vertex
+                    // Add the current vertex to the front of the path
+                    path.addFirst(curr);
+                    // Get the previous vertex on the shortest path to the current vertex
+                    curr = previous[curr];
                 }
                 for (int j = 0; j < path.size(); j++) {
-                    System.out.print(graph.vertices[path.get(j)].displyInfo()); // Print the vertices on the path
+                    // Print the vertices on the path
+                    System.out.print(graph.vertices[path.get(j)].displyInfo());
                     if (j < path.size() - 1) {
                         System.out.print(" ");
                     }
                 }
-
-                System.out.print("--- route length: " + distance[i]); // Print the length of the path
+                // Print the length of the path
+                System.out.print("--- route length: " + distance[i]);
                 System.out.println();
             }
             System.out.println("----------------------------------------------------------------------------------");
