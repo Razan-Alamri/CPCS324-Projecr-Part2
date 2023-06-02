@@ -42,9 +42,7 @@ public class AirFreightApp {
                 "\n This program to Compute the shortest path between every pair of locations using two algorithms:\n");
         System.out.println("\t1- Dijkstra algorithm computing the shortest path for a specified source");
         System.out.println("\t2- Dijkstra-based all shortest path algorithm");
-        System.out.print("\n> From these choices, please enter your choice: ");
-        // To save number of algorithm Type choice
-        int Algo_Type = input.nextInt();
+
         System.out.println("\n----------------------------------------------------------------------------------");
 
         // To disply menu of test cases can do
@@ -60,7 +58,7 @@ public class AirFreightApp {
         Graph map = new AFRouteMap();
 
         // To only print result if case is read from file
-        boolean isFile;
+        boolean isFile = false;
 
         // To get test case
         switch (test_Type) {
@@ -70,44 +68,6 @@ public class AirFreightApp {
                 File InputFile = new File("InputGraph.txt");
                 map.readGraphFromFile(InputFile);
                 isFile = true;
-                switch (Algo_Type) {
-                    case 1:
-                        // Apply two algoritms and compute the run time for each algorithm
-                        System.out.println(
-                                "----------------------------------------------------------------------------------");
-                        System.out.println();
-
-                        // Computing the shortest path for a specified source using Dijkstra algorithm
-                        SingleSourceSPAlg Dijkstra_Alg = new SingleSourceSPAlg(map);
-                        Vertex sVertex = map.vertices[0];
-                        // Start time
-                        start_Time = System.currentTimeMillis();
-                        // ********************************************************** call alg1 */
-                        Dijkstra_Alg.computeDijkstraAlg(sVertex, isFile);
-                        // End time
-                        end_Time = System.currentTimeMillis();
-                        // Prtint run time
-                        System.out.println("Dijkstra algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
-                        break;
-                    case 2:
-                        // Computing the shortest path for all source using Dijkstra-based algorithm
-                        DBAllSourceSPAlg DijkstraAll_Alg = new DBAllSourceSPAlg(map);
-                        // Start time
-                        start_Time = System.currentTimeMillis();
-                        // ********************************************************** call alg2 */
-                        DijkstraAll_Alg.computeDijkstraBasedSPAlg(isFile);
-                        // End time
-                        end_Time = System.currentTimeMillis();
-                        // Prtint run time
-                        System.out
-                                .println("Dijkstra-based all shortest path algorithm's run time is  "
-                                        + (end_Time - start_Time)
-                                        + " ms.\n");
-                        break;
-                    default:
-                        System.out.println("<   Invalid input!  >");
-                        break;
-                }
                 break;
             case 2:
                 isFile = false;
@@ -177,53 +137,30 @@ public class AirFreightApp {
                         break;
 
                 }
-                switch (Algo_Type) {
-
-                    case 1:
-                        // Apply two algoritms and compute the run time for each algorithm
-                        System.out.println(
-                                "----------------------------------------------------------------------------------");
-                        System.out.println();
-
-                        // Computing the shortest path for a specified source using Dijkstra algorithm
-                        SingleSourceSPAlg Dijkstra_Alg = new SingleSourceSPAlg(map);
-                        Vertex sVertex = map.vertices[0];
-                        // Start time
-                        start_Time = System.currentTimeMillis();
-                        // ********************************************************* call alg1 */
-                        Dijkstra_Alg.computeDijkstraAlg(sVertex, isFile);
-                        // End time
-                        end_Time = System.currentTimeMillis();
-                        // Prtint run time
-                        System.out.println("Dijkstra algorithm's run time is  " + (end_Time - start_Time) + " ms.\n");
-                        break;
-                    case 2:
-                        // Computing the shortest path for all source using Dijkstra-based algorithm
-                        DBAllSourceSPAlg DijkstraAll_Alg = new DBAllSourceSPAlg(map);
-                        // Start time
-                        start_Time = System.currentTimeMillis();
-                        // ********************************************************** call alg2 */
-                        DijkstraAll_Alg.computeDijkstraBasedSPAlg(isFile);
-                        // End time
-                        end_Time = System.currentTimeMillis();
-                        // Prtint run time
-                        System.out
-                                .println("Dijkstra-based all shortest path algorithm's run time is  "
-                                        + (end_Time - start_Time)
-                                        + " ms.\n");
-                        break;
-                    default:
-                        System.out.println("<   Invalid input!  >");
-                        break;
-                }
                 break;
             default:
                 System.out.println("<   Invalid input!  >");
                 break;
         }
 
-        // Print Hedar massege
+        System.out.println("\n----------------------------------------------------------------------------------\n\n");
+        // Computing the shortest path for all source using Dijkstra-based algorithm
+        DBAllSourceSPAlg DijkstraAll_Alg = new DBAllSourceSPAlg(map);
+        // Start time
+        start_Time = System.currentTimeMillis();
+        // ********************************************************** call alg2 */
+        DijkstraAll_Alg.computeDijkstraBasedSPAlg(isFile);
+        // End time
+        end_Time = System.currentTimeMillis();
+        // Prtint run time
+        System.out
+                .println("\nDijkstra-based all shortest path algorithm's run time is  "
+                        + (end_Time - start_Time)
+                        + " ms.\n");
         System.out.println("----------------------------------------------------------------------------------");
+
+        // Print Hedar massege
+        System.out.println("\n\n----------------------------------------------------------------------------------");
         System.out.println("-------             Thank You For Using Air Freight Application            -------");
         System.out.println("----------------------------------------------------------------------------------");
 

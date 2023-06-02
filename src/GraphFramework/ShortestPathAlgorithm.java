@@ -8,18 +8,15 @@
  */
 package GraphFramework;
 
+// The ShortestPathAlgorithm super class has two subclasses to compute Shortest Path Algorithm
 public class ShortestPathAlgorithm {
 
-    // ----------------------------Attributes Section----------------------------
-    // deleare graph object to store the graph
+    // Data filed
+
+    // Create Graph object (from association relationship)
     Graph graph;
 
-    // ----------------------------Constructors section----------------------------
-    /**
-     * Constructor with specific parameter
-     *
-     * @param graph : graph object
-     */
+    // Constructor
     public ShortestPathAlgorithm(Graph graph) {
         this.graph = graph;
     }
