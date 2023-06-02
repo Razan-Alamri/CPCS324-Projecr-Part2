@@ -87,13 +87,4 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
         }
 
     }
-
-    public void print() {
-        for (int i = 0; i < graph.totalVertices; i++) {
-            System.out.println("  > From " + "A" + " --> " + (char) (i + 65));
-            // System.out.println(" The Path is : " + verPath[i] + " && The Cost is : " +
-            // verDistance[i]);
-
-        }
-    }
 }
