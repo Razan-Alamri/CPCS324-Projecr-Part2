@@ -11,42 +11,36 @@ package GraphFramework;
 import java.util.LinkedList;
 
 public abstract class Vertex {
-    /**
-     * label of vertex
-     */
+
+    //------------------- Attributes ---------------------
+    // label of vertex
     char label;
-    /**
-     * boolean to determine if the vertex is visited or not
-     */
+    // boolean to determine if the vertex is visited or not
     boolean isVisited;
-    /**
-     * to indicate the position of vertex
-     */
+    // to indicate the position of vertex
     int position;
-    // Decleare the Linked list variable adjList to store the adjacent vertices to
-    // this vertex(have edge)
+    // Decleare the Linked list variable adjList to store the adjacent vertices after have an edge
     LinkedList<Edge> adjList;
 
-    /**
-     * empty constructor
-     */
+    //------------------------------------ Constructure ------------------------------
+    //Default
     public Vertex() {
 
     }
 
     /**
-     * 
      * @param position of a vertex
      */
     public Vertex(int position) {
         this.position = position;
         adjList = new LinkedList<>();
     }
+//-------------------------------- Methods -----------------------------------
+    // Check if this vertices are adjacent
 
-    // Check if this vertex is adjacent to another vertex
-    public boolean isAdjacent(Vertex other) {
+    public boolean isAdjacent(Vertex adj) {
         for (Edge edge : adjList) {
-            if (edge.target == other) {
+            if (edge.target == adj) {
                 return true;
             }
         }
