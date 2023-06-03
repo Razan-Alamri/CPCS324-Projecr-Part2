@@ -16,7 +16,7 @@ public abstract class Graph {
 
     // Data filed
 
-    // Number of vertices
+    // count Number of vertices
     int verticesNo;
     // Number of edges
     int edgeNo;
@@ -25,16 +25,18 @@ public abstract class Graph {
     // Array to can store and found vertex by Position(ID) (from association
     // relationship)
     public Vertex[] vertices;
+    // toltal Number of vertices;
+    int AllEdgesNo;
 
     // Contructors
     public Graph() {
 
     }
 
-    public Graph(int verticesNoNum, int edgeNoNum, boolean isDigraph) {
-        this.edgeNo = edgeNoNum;
+    public Graph(int verticesNo, int EdgeNo, boolean isDigraph) {
+        this.AllEdgesNo = EdgeNo;
         this.isDigraph = isDigraph;
-        this.verticesNo = verticesNoNum;
+        this.verticesNo = verticesNo;
         vertices = new Vertex[verticesNo];
     }
 
@@ -55,25 +57,26 @@ public abstract class Graph {
      * assigning them random weights.
      */
     public void makeGraph() {
-        // Create n vertices with random labels
+        // Create n vertices with random labels && edgeNo < AllEdgesNo
         Random random = new Random();
-        for (int i = 0; i < verticesNo - 1; i++) {
+
+        for (int i = 0; i < verticesNo - 1 && edgeNo < AllEdgesNo; i++) {
             int r = random.nextInt(50) + 1;
+
             // initializ vertex
             addEdge(i, i + 1, r);
         }
 
-        // make random graph with remaining edges
-        // (remaining edges = ne - (nv -1))
-        int ver_Vertex, target_Vertex;
+        // calculate the remainig edges to generate it randomly
+        int remaning = AllEdgesNo - (verticesNo - 1);
 
-        // Create m edges randomly between vertices
+        // Save edges to avoid duplicate edge
         HashSet<String> edgeSet = new HashSet<>();
-        for (int i = 0; i < (edgeNo - verticesNo + 1); i++) {
+        // make random graph with remaining edges
+        for (int i = 0; i < remaning && edgeNo < AllEdgesNo; i++) {
             // Choose two random vertices
-            ver_Vertex = random.nextInt(verticesNo);
-            target_Vertex = random.nextInt(verticesNo);
-
+            int ver_Vertex = random.nextInt(verticesNo);
+            int target_Vertex = random.nextInt(verticesNo);
             /*
              * ver_Vertex.equals(target_Vertex) -> to check ver and diestination are
              * not the same
@@ -92,8 +95,8 @@ public abstract class Graph {
             edgeSet.add(ver_Vertex + ":" + target_Vertex);
 
             // To add label of vertex
-            add_Label_Make(ver_Vertex);
-            add_Label_Make(target_Vertex);
+            add_Label(ver_Vertex);
+            add_Label(target_Vertex);
         }
     }
 
@@ -126,10 +129,10 @@ public abstract class Graph {
             int wieght = inpScanner.nextInt();
             // Add edge between ver and destination vertices
             addEdge(s - 65, t - 65, wieght);
-            // Add label if ver vertex
-            add_Label_File(s);
-            // Add label if ver vertex
-            add_Label_File(t);
+            // Add label to s vertex
+            add_Label(s);
+            // Add label to t vertex
+            add_Label(t);
         }
         // Close scanner object
         inpScanner.close();
@@ -160,13 +163,15 @@ public abstract class Graph {
          * Increment the edge count by 1 If it is a undirected graph
          * and by 2 if directed graph
          */
-        edgeNo++;
+
         if (!isDigraph) {
             // Create reverse edge and add it to the target adjacent list
             Edge edge2 = creatEdge(vertices[u], vertices[v], w);
             vertices[u].adjList.add(edge2);
+            add_Label(u);
             edgeNo++;
         }
+        edgeNo++;
         return edge1;
     }
 
@@ -186,12 +191,12 @@ public abstract class Graph {
     }
 
     // add label from file
-    public void add_Label_File(char lable) {
+    public void add_Label(char lable) {
         vertices[lable - 65].label = lable;
     }
 
     // add label with uniqe number add_Label_Make
-    public void add_Label_Make(int id) {
+    public void add_Label(int id) {
         if (vertices[id].label == 0) {
             int x = id;
             char a = (char) (x + '0');
@@ -199,7 +204,14 @@ public abstract class Graph {
         }
     }
 
-    // Setteers and Getters
+    public int getVerticesNo() {
+        return verticesNo;
+    }
+
+    public void setVerticesNo(int verticesNo) {
+        this.verticesNo = verticesNo;
+    }
+
     public int getEdgeNo() {
         return edgeNo;
     }
@@ -224,19 +236,14 @@ public abstract class Graph {
         this.vertices = vertices;
     }
 
-    public int getedgeNo() {
-        return edgeNo;
+    public int getAllEdgesNo() {
+        return AllEdgesNo;
     }
 
-    public void setedgeNo(int edgeNo) {
-        this.edgeNo = edgeNo;
+    public void setAllEdgesNo(int allEdgesNo) {
+        AllEdgesNo = allEdgesNo;
     }
 
-    public int getverticesNo() {
-        return verticesNo;
-    }
+    // Setteers and Getters
 
-    public void setverticesNo(int verticesNo) {
-        this.verticesNo = verticesNo;
-    }
 }

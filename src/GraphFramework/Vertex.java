@@ -61,14 +61,6 @@ public abstract class Vertex {
         this.isVisited = isVisited;
     }
 
-    public int getPosition() {
-        return ID;
-    }
-
-    public void setPosition(int ID) {
-        this.ID = ID;
-    }
-
     public LinkedList<Edge> getAdjList() {
         return adjList;
     }
@@ -77,6 +69,15 @@ public abstract class Vertex {
         this.adjList = adjList;
     }
 
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int iD) {
+        ID = iD;
+    }
+
     // Method is responsible for displaying the information of the class attributes.
     public abstract String displyInfo();
+
 }
