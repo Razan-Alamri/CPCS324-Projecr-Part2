@@ -10,34 +10,31 @@ package GraphFramework;
 
 import java.util.LinkedList;
 
+// Vertex is a class that represents a graph vertex
 public abstract class Vertex {
 
-    //------------------- Attributes ---------------------
-    // label of vertex
+    // Data filed
+
+    // Represents the vertex label
     char label;
-    // boolean to determine if the vertex is visited or not
+    // Check if vertex is visited or not
     boolean isVisited;
-    // to indicate the position of vertex
-    int position;
-    // Decleare the Linked list variable adjList to store the adjacent vertices after have an edge
+    // Represents the vertex ID
+    int ID;
+    // Store adjacency list in LL (from association relationship)
     LinkedList<Edge> adjList;
 
-    //------------------------------------ Constructure ------------------------------
-    //Default
+    // Contructors
     public Vertex() {
 
     }
 
-    /**
-     * @param position of a vertex
-     */
-    public Vertex(int position) {
-        this.position = position;
+    public Vertex(int ID) {
+        this.ID = ID;
         adjList = new LinkedList<>();
     }
-//-------------------------------- Methods -----------------------------------
-    // Check if this vertices are adjacent
 
+    // Check if this vertex is adjacent to another vertex
     public boolean isAdjacent(Vertex adj) {
         for (Edge edge : adjList) {
             if (edge.target == adj) {
@@ -47,6 +44,7 @@ public abstract class Vertex {
         return false;
     }
 
+    // Setteers and Getters
     public char getLabel() {
         return label;
     }
@@ -64,11 +62,11 @@ public abstract class Vertex {
     }
 
     public int getPosition() {
-        return position;
+        return ID;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setPosition(int ID) {
+        this.ID = ID;
     }
 
     public LinkedList<Edge> getAdjList() {

@@ -26,12 +26,12 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
 
         // Initialize the necessary data structures
         // Array to hold the distances from source to each vertex
-        int[] distance = new int[graph.totalVertices];
+        int[] distance = new int[graph.verticesNo];
         // Array to hold the previous vertex on the shortest path from
         // source to each vertex
-        int[] previous = new int[graph.totalVertices];
+        int[] previous = new int[graph.verticesNo];
         // Array to keep track of visited vertices
-        boolean[] visited = new boolean[graph.totalVertices];
+        boolean[] visited = new boolean[graph.verticesNo];
         // Set all distances to infinity initially
         Arrays.fill(distance, Integer.MAX_VALUE);
         // Set all previous vertices to -1 initially
@@ -39,14 +39,14 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
         // Set all vertices as unvisited initially
         Arrays.fill(visited, false);
         // Set the distance to the source vertex as 0
-        distance[source.position] = 0;
+        distance[source.ID] = 0;
 
         // Create a priority queue to store unvisited vertices and order them by their
         // distance from the source vertex
-        PriorityQueue<Vertex> pq = new PriorityQueue<>(graph.totalVertices, new Comparator<Vertex>() {
+        PriorityQueue<Vertex> pq = new PriorityQueue<>(graph.verticesNo, new Comparator<Vertex>() {
             @Override
             public int compare(Vertex v1, Vertex v2) {
-                return distance[v1.position] - distance[v2.position];
+                return distance[v1.ID] - distance[v2.ID];
             }
         });
         // Add the source vertex to the priority queue
@@ -58,21 +58,21 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
             // queue
             Vertex curr = pq.poll();
             // Mark the current vertex as visited
-            visited[curr.position] = true;
+            visited[curr.ID] = true;
             // Iterate over the adjacent edges of the current vertex
             for (Edge e : curr.adjList) {
                 // Get the adjacent vertex
                 Vertex v = e.target;
-                if (!visited[v.position] && distance[curr.position] != Integer.MAX_VALUE &&
-                        distance[curr.position] + e.weight < distance[v.position]) {
+                if (!visited[v.ID] && distance[curr.ID] != Integer.MAX_VALUE &&
+                        distance[curr.ID] + e.weight < distance[v.ID]) {
                     /*
                      * If the adjacent vertex is unvisited and a shorter path to it is found through
                      * the current vertex,
                      * update its distance and previous vertex information and add it back to the
                      * priority queue
                      */
-                    distance[v.position] = distance[curr.position] + e.weight;
-                    previous[v.position] = curr.position;
+                    distance[v.ID] = distance[curr.ID] + e.weight;
+                    previous[v.ID] = curr.ID;
                     pq.remove(v);
                     pq.add(v);
                 }
@@ -82,7 +82,7 @@ public class SingleSourceSPAlg extends ShortestPathAlgorithm {
         if (isFile) {
             // Print the result
             System.out.println("Shortest paths from location " + source.label + ":");
-            for (int i = 0; i < graph.totalVertices; i++) {
+            for (int i = 0; i < graph.verticesNo; i++) {
                 if (distance[i] == Integer.MAX_VALUE) {
                     // If there is no path from the source vertex to the current vertex, print a
                     // message indicating so

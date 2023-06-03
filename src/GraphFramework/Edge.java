@@ -8,17 +8,21 @@
  */
 package GraphFramework;
 
+// Edge is a class that represents a graph edge
 public abstract class Edge {
-    
-    //---------------------- Attributes ---------------------------------------
 
-    Vertex src;
-    Vertex target;
-    Vertex parent;
+    // Data filed
+
+    // Cost of edge
     int weight;
+    // Parent vertex (from association relationship)
+    Vertex parent;
+    // Source vertex (from association relationship)
+    Vertex source;
+    // Target vertex (from association relationship)
+    Vertex target;
 
-        //---------------------- Constructures ---------------------------------------
-    //Default
+    // Contructors
     public Edge() {
 
     }
@@ -27,21 +31,20 @@ public abstract class Edge {
         this.weight = weight;
     }
 
-    public Edge(Vertex src, Vertex target, int weight) {
-        this.src = src;
+    public Edge(Vertex source, Vertex target, int weight) {
+        this.source = source;
         this.target = target;
         this.weight = weight;
-        this.parent = src;
+        this.parent = source;
     }
 
-            //---------------------- Methods ---------------------------------------
-
+    // Setteers and Getters
     public Vertex getSource() {
-        return src;
+        return source;
     }
 
     public void setSource(Vertex source) {
-        this.src = source;
+        this.source = source;
     }
 
     public Vertex getTarget() {

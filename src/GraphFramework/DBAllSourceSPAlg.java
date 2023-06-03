@@ -27,7 +27,7 @@ public class DBAllSourceSPAlg extends ShortestPathAlgorithm {
         // Print the result
         System.out.println("Shortest paths from all location:\n");
         // Loop for aal vertex
-        for (int i = 0; i < graph.totalVertices; i++) {
+        for (int i = 0; i < graph.verticesNo; i++) {
             // Call computeDijkstraAlg() method
             DijkstraAlg.computeDijkstraAlg(graph.vertices[i], isFile);
         }
