@@ -1,18 +1,29 @@
-## Getting Started
+# ✈️ Air Freight Optimization using Dijkstra's Algorithm
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## 📌 Project Overview
+This project implements **Dijkstra's algorithm** to solve the *All-Pairs Shortest Path* problem for an **Air Freight System**, helping to optimize routes, reduce fuel consumption, and minimize delivery times.
 
-## Folder Structure
+## 🧩 Features
+- Compute the shortest path between each pair of air freight locations using Dijkstra’s algorithm.
+- Generate large, random weighted graphs to test algorithm efficiency on various sizes:
+  - n = 2000, 3000, 4000, 5000, 6000 nodes
+- Measure and compare the empirical running time with theoretical time complexity.
 
-The workspace contains two folders by default, where:
+## 📁 Files Included
+- `AirFreight_Dijkstra_Assignment.pdf` – The original assignment brief including all requirements, UML class diagrams, and design instructions.
+- `Empirical_Analysis_Report.pdf` – Detailed report analyzing the empirical performance of the algorithm vs theoretical expectations.
+- Java source code – Fully implemented, modular, and commented code using the class design as per the assignment:
+  - `AirFreightApp.java`
+  - `Graph.java`
+  - `Location.java`
+  - `Route.java`
+  - `SingleSourceSPAlg.java`
+  - `DBAllSourceSPAlg.java`
+## 📌 Language & Tools
+- Java
+- Visual Studio Code
+- Git
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## 📚 References
+- Anany Levitin, *Introduction to The Design and Analysis of Algorithms*, 3rd Edition.
+- [1] Tinuke Omolewa Oladele et al., *Application of Floyd-Warshall’s Algorithm in Air Freight Service in Nigeria*, IJERT, 2019.
